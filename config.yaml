@@ -1,0 +1,14 @@
+name: 'WebGPUBinding'
+description: 'Bindings to WebGPU'
+output: 'lib/WebGPU_Binding.dart'
+compiler-opts:
+  - '-I/usr/lib/llvm-9/include/'
+compiler-opts-automatic:
+  macos:
+    include-c-standard-library: false  
+headers:
+  entry-points:
+    - 'native/wgpu-native/ffi/**.h'
+    - 'native/wgpu-native/ffi/webgpu-headers/webgpu.h'
+  # include-directives:
+  #   - 'native/wgpu-native/ffi/webgpu-headers/webgpu.h'
