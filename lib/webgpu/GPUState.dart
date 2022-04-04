@@ -18,21 +18,26 @@ class GPUVertexState {
     state.bufferCount = buffers?.length ?? 0;
 
 
-    // if(buffers == null) {
-    //   state.buffers = nullptr;
-    // } else if( buffers.length == 1 ) {
-    //   state.buffers = buffers[0].pointer;
-    // } else {
-    //   print("GPUState buffers TODO  ");
-    //   var buffersPointer = ffi.calloc<WGPUVertexBufferLayout>(buffers.length);
+    if(buffers == null) {
+      state.buffers = nullptr;
+    } else if( buffers.length == 1 ) {
+      state.buffers = buffers[0].pointer;
+    } else {
+      var buffersPointer = ffi.calloc<WGPUVertexBufferLayout>(buffers.length);
       
-    //   buffers.asMap().forEach((key, value) {
-    //     var _p = buffersPointer[ key ];
-    //     _p = value.pointer.ref;
-    //   });
+      buffers.asMap().forEach((key, value) {
+        var _p = buffersPointer[ key ];
+        _p = value.pointer.ref;
 
-    //   state.buffers = buffersPointer;
-    // }
+        _p.arrayStride = value.pointer.ref.arrayStride;
+        _p.stepMode = value.pointer.ref.stepMode;
+        _p.attributeCount = value.pointer.ref.attributeCount;
+        _p.attributes = value.pointer.ref.attributes;
+
+      });
+
+      state.buffers = buffersPointer;
+    }
 
   }
 
@@ -113,7 +118,7 @@ class GPUColorTargetState {
     state.format = format;
 
     state.blend = blend?.pointer ?? nullptr;
-    state.writeMask = WGPUColorWriteMask_All;
+    state.writeMask = writeMask;
   }
 
 

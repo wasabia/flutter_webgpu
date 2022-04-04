@@ -43,7 +43,7 @@ typedef ReadBufferMap = Void Function(Int32, Pointer<Void>);
 class Example {
 
 
-  static initWebGPU() {
+  static render(int width, int height) {
 
     var _webGPU = Wgpu.instance.webGPU;
 
@@ -107,9 +107,6 @@ class Example {
       deviceCallback, device.cast<Void>());
 
 
-    int width = 256;
-    int height = 256;
- 
     int bytes_per_pixel = Uint32List.bytesPerElement;
     int unpadded_bytes_per_row = width * bytes_per_pixel;
     int align = 256;
@@ -186,7 +183,7 @@ class Example {
     _attach.resolveTarget = nullptr;
     _attach.loadOp = WGPULoadOp.WGPULoadOp_Clear;
     _attach.storeOp = WGPUStoreOp.WGPUStoreOp_Store;
-    _attach.clearColor = _color;
+    _attach.clearValue = _color;
       
     Pointer<WGPURenderPassDescriptor> desc5 = ffi.calloc<WGPURenderPassDescriptor>();
     WGPURenderPassDescriptor _desc5 = desc5.ref;
@@ -195,7 +192,7 @@ class Example {
     _desc5.depthStencilAttachment = nullptr;
 
     WGPURenderPassEncoder renderPass = _webGPU.wgpuCommandEncoderBeginRenderPass(encoder, desc5);
-    _webGPU.wgpuRenderPassEncoderEndPass(renderPass);
+    _webGPU.wgpuRenderPassEncoderEnd(renderPass);
 
     
     Pointer<WGPUOrigin3D> origin = ffi.calloc<WGPUOrigin3D>();
@@ -245,8 +242,9 @@ class Example {
     _webGPU.wgpuBufferMapAsync(outputBuffer, WGPUMapMode.WGPUMapMode_Read, 0, bufferSize,
                       readBufferMapCallback, nullptr);
 
+    var bt = ffi.calloc<bool>();
 
-    _webGPU.wgpuDevicePoll(device.value, true);
+    _webGPU.wgpuDevicePoll(device.value, bt);
 
 
     print(" wgpuBufferGetMappedRange ");

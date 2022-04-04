@@ -562,15 +562,15 @@ class WebGPUBinding {
 
   void wgpuComputePassEncoderDispatch(
     WGPUComputePassEncoder computePassEncoder,
-    int x,
-    int y,
-    int z,
+    int workgroupCountX,
+    int workgroupCountY,
+    int workgroupCountZ,
   ) {
     return _wgpuComputePassEncoderDispatch(
       computePassEncoder,
-      x,
-      y,
-      z,
+      workgroupCountX,
+      workgroupCountY,
+      workgroupCountZ,
     );
   }
 
@@ -602,18 +602,18 @@ class WebGPUBinding {
       _wgpuComputePassEncoderDispatchIndirectPtr
           .asFunction<void Function(WGPUComputePassEncoder, WGPUBuffer, int)>();
 
-  void wgpuComputePassEncoderEndPass(
+  void wgpuComputePassEncoderEnd(
     WGPUComputePassEncoder computePassEncoder,
   ) {
-    return _wgpuComputePassEncoderEndPass(
+    return _wgpuComputePassEncoderEnd(
       computePassEncoder,
     );
   }
 
-  late final _wgpuComputePassEncoderEndPassPtr =
+  late final _wgpuComputePassEncoderEndPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(WGPUComputePassEncoder)>>(
-          'wgpuComputePassEncoderEndPass');
-  late final _wgpuComputePassEncoderEndPass = _wgpuComputePassEncoderEndPassPtr
+          'wgpuComputePassEncoderEnd');
+  late final _wgpuComputePassEncoderEnd = _wgpuComputePassEncoderEndPtr
       .asFunction<void Function(WGPUComputePassEncoder)>();
 
   void wgpuComputePassEncoderEndPipelineStatisticsQuery(
@@ -1301,13 +1301,11 @@ class WebGPUBinding {
 
   void wgpuQueueOnSubmittedWorkDone(
     WGPUQueue queue,
-    int signalValue,
     WGPUQueueWorkDoneCallback callback,
     ffi.Pointer<ffi.Void> userdata,
   ) {
     return _wgpuQueueOnSubmittedWorkDone(
       queue,
-      signalValue,
       callback,
       userdata,
     );
@@ -1315,12 +1313,12 @@ class WebGPUBinding {
 
   late final _wgpuQueueOnSubmittedWorkDonePtr = _lookup<
       ffi.NativeFunction<
-          ffi.Void Function(WGPUQueue, ffi.Uint64, WGPUQueueWorkDoneCallback,
+          ffi.Void Function(WGPUQueue, WGPUQueueWorkDoneCallback,
               ffi.Pointer<ffi.Void>)>>('wgpuQueueOnSubmittedWorkDone');
   late final _wgpuQueueOnSubmittedWorkDone =
       _wgpuQueueOnSubmittedWorkDonePtr.asFunction<
-          void Function(WGPUQueue, int, WGPUQueueWorkDoneCallback,
-              ffi.Pointer<ffi.Void>)>();
+          void Function(
+              WGPUQueue, WGPUQueueWorkDoneCallback, ffi.Pointer<ffi.Void>)>();
 
   void wgpuQueueSubmit(
     WGPUQueue queue,
@@ -1802,6 +1800,20 @@ class WebGPUBinding {
       _wgpuRenderPassEncoderDrawIndirectPtr
           .asFunction<void Function(WGPURenderPassEncoder, WGPUBuffer, int)>();
 
+  void wgpuRenderPassEncoderEnd(
+    WGPURenderPassEncoder renderPassEncoder,
+  ) {
+    return _wgpuRenderPassEncoderEnd(
+      renderPassEncoder,
+    );
+  }
+
+  late final _wgpuRenderPassEncoderEndPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(WGPURenderPassEncoder)>>(
+          'wgpuRenderPassEncoderEnd');
+  late final _wgpuRenderPassEncoderEnd = _wgpuRenderPassEncoderEndPtr
+      .asFunction<void Function(WGPURenderPassEncoder)>();
+
   void wgpuRenderPassEncoderEndOcclusionQuery(
     WGPURenderPassEncoder renderPassEncoder,
   ) {
@@ -1816,20 +1828,6 @@ class WebGPUBinding {
   late final _wgpuRenderPassEncoderEndOcclusionQuery =
       _wgpuRenderPassEncoderEndOcclusionQueryPtr
           .asFunction<void Function(WGPURenderPassEncoder)>();
-
-  void wgpuRenderPassEncoderEndPass(
-    WGPURenderPassEncoder renderPassEncoder,
-  ) {
-    return _wgpuRenderPassEncoderEndPass(
-      renderPassEncoder,
-    );
-  }
-
-  late final _wgpuRenderPassEncoderEndPassPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(WGPURenderPassEncoder)>>(
-          'wgpuRenderPassEncoderEndPass');
-  late final _wgpuRenderPassEncoderEndPass = _wgpuRenderPassEncoderEndPassPtr
-      .asFunction<void Function(WGPURenderPassEncoder)>();
 
   void wgpuRenderPassEncoderEndPipelineStatisticsQuery(
     WGPURenderPassEncoder renderPassEncoder,
@@ -2263,7 +2261,7 @@ class WebGPUBinding {
 
   void wgpuDevicePoll(
     WGPUDevice device,
-    bool force_wait,
+    ffi.Pointer<bool> force_wait,
   ) {
     return _wgpuDevicePoll(
       device,
@@ -2272,10 +2270,10 @@ class WebGPUBinding {
   }
 
   late final _wgpuDevicePollPtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(WGPUDevice, ffi.Bool)>>(
+          ffi.NativeFunction<ffi.Void Function(WGPUDevice, ffi.Pointer<bool>)>>(
       'wgpuDevicePoll');
   late final _wgpuDevicePoll = _wgpuDevicePollPtr
-      .asFunction<void Function(WGPUDevice, bool)>();
+      .asFunction<void Function(WGPUDevice, ffi.Pointer<bool>)>();
 
   void wgpuSetLogCallback(
     WGPULogCallback callback,
@@ -2867,9 +2865,16 @@ abstract class WGPUIndexFormat {
 }
 
 abstract class WGPULoadOp {
-  static const int WGPULoadOp_Clear = 0;
-  static const int WGPULoadOp_Load = 1;
+  static const int WGPULoadOp_Undefined = 0;
+  static const int WGPULoadOp_Clear = 1;
+  static const int WGPULoadOp_Load = 2;
   static const int WGPULoadOp_Force32 = 2147483647;
+}
+
+abstract class WGPUMipmapFilterMode {
+  static const int WGPUMipmapFilterMode_Nearest = 0;
+  static const int WGPUMipmapFilterMode_Linear = 1;
+  static const int WGPUMipmapFilterMode_Force32 = 2147483647;
 }
 
 abstract class WGPUPipelineStatisticName {
@@ -2886,6 +2891,12 @@ abstract class WGPUPowerPreference {
   static const int WGPUPowerPreference_LowPower = 1;
   static const int WGPUPowerPreference_HighPerformance = 2;
   static const int WGPUPowerPreference_Force32 = 2147483647;
+}
+
+abstract class WGPUPredefinedColorSpace {
+  static const int WGPUPredefinedColorSpace_Undefined = 0;
+  static const int WGPUPredefinedColorSpace_Srgb = 1;
+  static const int WGPUPredefinedColorSpace_Force32 = 2147483647;
 }
 
 abstract class WGPUPresentMode {
@@ -2944,13 +2955,14 @@ abstract class WGPUSType {
   static const int WGPUSType_Invalid = 0;
   static const int WGPUSType_SurfaceDescriptorFromMetalLayer = 1;
   static const int WGPUSType_SurfaceDescriptorFromWindowsHWND = 2;
-  static const int WGPUSType_SurfaceDescriptorFromXlib = 3;
+  static const int WGPUSType_SurfaceDescriptorFromXlibWindow = 3;
   static const int WGPUSType_SurfaceDescriptorFromCanvasHTMLSelector = 4;
   static const int WGPUSType_ShaderModuleSPIRVDescriptor = 5;
   static const int WGPUSType_ShaderModuleWGSLDescriptor = 6;
   static const int WGPUSType_PrimitiveDepthClipControl = 7;
   static const int WGPUSType_SurfaceDescriptorFromWaylandSurface = 8;
   static const int WGPUSType_SurfaceDescriptorFromAndroidNativeWindow = 9;
+  static const int WGPUSType_SurfaceDescriptorFromXcbWindow = 10;
   static const int WGPUSType_Force32 = 2147483647;
 }
 
@@ -2981,8 +2993,9 @@ abstract class WGPUStorageTextureAccess {
 }
 
 abstract class WGPUStoreOp {
-  static const int WGPUStoreOp_Store = 0;
-  static const int WGPUStoreOp_Discard = 1;
+  static const int WGPUStoreOp_Undefined = 0;
+  static const int WGPUStoreOp_Store = 1;
+  static const int WGPUStoreOp_Discard = 2;
   static const int WGPUStoreOp_Force32 = 2147483647;
 }
 
@@ -3559,6 +3572,12 @@ class WGPUQuerySetDescriptor extends ffi.Struct {
   external int pipelineStatisticsCount;
 }
 
+class WGPUQueueDescriptor extends ffi.Struct {
+  external ffi.Pointer<WGPUChainedStruct> nextInChain;
+
+  external ffi.Pointer<ffi.Int8> label;
+}
+
 class WGPURenderBundleDescriptor extends ffi.Struct {
   external ffi.Pointer<WGPUChainedStruct> nextInChain;
 
@@ -3598,7 +3617,7 @@ class WGPURenderPassDepthStencilAttachment extends ffi.Struct {
   external int depthStoreOp;
 
   @ffi.Float()
-  external double clearDepth;
+  external double depthClearValue;
 
   @ffi.Int32()
   external int depthReadOnly;
@@ -3610,7 +3629,7 @@ class WGPURenderPassDepthStencilAttachment extends ffi.Struct {
   external int stencilStoreOp;
 
   @ffi.Uint32()
-  external int clearStencil;
+  external int stencilClearValue;
 
   @ffi.Int32()
   external int stencilReadOnly;
@@ -3683,11 +3702,15 @@ class WGPUSamplerDescriptor extends ffi.Struct {
   external int maxAnisotropy;
 }
 
-class WGPUShaderModuleDescriptor extends ffi.Struct {
+class WGPUShaderModuleCompilationHint extends ffi.Struct {
   external ffi.Pointer<WGPUChainedStruct> nextInChain;
 
-  external ffi.Pointer<ffi.Int8> label;
+  external ffi.Pointer<ffi.Int8> entryPoint;
+
+  external WGPUPipelineLayout layout;
 }
+
+typedef WGPUPipelineLayout = ffi.Pointer<WGPUPipelineLayoutImpl>;
 
 class WGPUShaderModuleSPIRVDescriptor extends ffi.Struct {
   external WGPUChainedStruct chain;
@@ -3737,6 +3760,12 @@ class WGPUSurfaceDescriptor extends ffi.Struct {
   external ffi.Pointer<ffi.Int8> label;
 }
 
+class WGPUSurfaceDescriptorFromAndroidNativeWindow extends ffi.Struct {
+  external WGPUChainedStruct chain;
+
+  external ffi.Pointer<ffi.Void> window;
+}
+
 class WGPUSurfaceDescriptorFromCanvasHTMLSelector extends ffi.Struct {
   external WGPUChainedStruct chain;
 
@@ -3749,23 +3778,6 @@ class WGPUSurfaceDescriptorFromMetalLayer extends ffi.Struct {
   external ffi.Pointer<ffi.Void> layer;
 }
 
-class WGPUSurfaceDescriptorFromWindowsHWND extends ffi.Struct {
-  external WGPUChainedStruct chain;
-
-  external ffi.Pointer<ffi.Void> hinstance;
-
-  external ffi.Pointer<ffi.Void> hwnd;
-}
-
-class WGPUSurfaceDescriptorFromXlib extends ffi.Struct {
-  external WGPUChainedStruct chain;
-
-  external ffi.Pointer<ffi.Void> display;
-
-  @ffi.Uint32()
-  external int window;
-}
-
 class WGPUSurfaceDescriptorFromWaylandSurface extends ffi.Struct {
   external WGPUChainedStruct chain;
 
@@ -3774,10 +3786,30 @@ class WGPUSurfaceDescriptorFromWaylandSurface extends ffi.Struct {
   external ffi.Pointer<ffi.Void> surface;
 }
 
-class WGPUSurfaceDescriptorFromAndroidNativeWindow extends ffi.Struct {
+class WGPUSurfaceDescriptorFromWindowsHWND extends ffi.Struct {
   external WGPUChainedStruct chain;
 
-  external ffi.Pointer<ffi.Void> window;
+  external ffi.Pointer<ffi.Void> hinstance;
+
+  external ffi.Pointer<ffi.Void> hwnd;
+}
+
+class WGPUSurfaceDescriptorFromXcbWindow extends ffi.Struct {
+  external WGPUChainedStruct chain;
+
+  external ffi.Pointer<ffi.Void> connection;
+
+  @ffi.Uint32()
+  external int window;
+}
+
+class WGPUSurfaceDescriptorFromXlibWindow extends ffi.Struct {
+  external WGPUChainedStruct chain;
+
+  external ffi.Pointer<ffi.Void> display;
+
+  @ffi.Uint32()
+  external int window;
 }
 
 class WGPUSwapChainDescriptor extends ffi.Struct {
@@ -4008,13 +4040,24 @@ class WGPURenderPassColorAttachment extends ffi.Struct {
   @ffi.Int32()
   external int storeOp;
 
-  external WGPUColor clearColor;
+  external WGPUColor clearValue;
 }
 
 class WGPURequiredLimits extends ffi.Struct {
   external ffi.Pointer<WGPUChainedStruct> nextInChain;
 
   external WGPULimits limits;
+}
+
+class WGPUShaderModuleDescriptor extends ffi.Struct {
+  external ffi.Pointer<WGPUChainedStruct> nextInChain;
+
+  external ffi.Pointer<ffi.Int8> label;
+
+  @ffi.Uint32()
+  external int hintCount;
+
+  external ffi.Pointer<WGPUShaderModuleCompilationHint> hints;
 }
 
 class WGPUSupportedLimits extends ffi.Struct {
@@ -4044,6 +4087,11 @@ class WGPUTextureDescriptor extends ffi.Struct {
 
   @ffi.Uint32()
   external int sampleCount;
+
+  @ffi.Uint32()
+  external int viewFormatCount;
+
+  external ffi.Pointer<ffi.Int32> viewFormats;
 }
 
 class WGPUVertexBufferLayout extends ffi.Struct {
@@ -4094,8 +4142,6 @@ class WGPUComputePipelineDescriptor extends ffi.Struct {
   external WGPUProgrammableStageDescriptor compute;
 }
 
-typedef WGPUPipelineLayout = ffi.Pointer<WGPUPipelineLayoutImpl>;
-
 class WGPUDeviceDescriptor extends ffi.Struct {
   external ffi.Pointer<WGPUChainedStruct> nextInChain;
 
@@ -4107,6 +4153,8 @@ class WGPUDeviceDescriptor extends ffi.Struct {
   external ffi.Pointer<ffi.Int32> requiredFeatures;
 
   external ffi.Pointer<WGPURequiredLimits> requiredLimits;
+
+  external WGPUQueueDescriptor defaultQueue;
 }
 
 class WGPURenderPassDescriptor extends ffi.Struct {
@@ -4274,6 +4322,7 @@ class WGPUDeviceExtras extends ffi.Struct {
   external ffi.Pointer<ffi.Int8> tracePath;
 }
 
+typedef bool = ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ffi.Int32>)>;
 typedef WGPULogCallback = ffi.Pointer<
     ffi.NativeFunction<ffi.Void Function(ffi.Int32, ffi.Pointer<ffi.Int8>)>>;
 
@@ -4314,6 +4363,8 @@ const int _DARWIN_FEATURE_64_BIT_INODE = 1;
 const int _DARWIN_FEATURE_ONLY_UNIX_CONFORMANCE = 1;
 
 const int _DARWIN_FEATURE_UNIX_CONFORMANCE = 3;
+
+const int __has_ptrcheck = 0;
 
 const int __DARWIN_NULL = 0;
 

@@ -28,7 +28,7 @@ class GPUDevice {
 
   GPUBuffer createBuffer(GPUBufferDescriptor descriptor) {
     WGPUBuffer outputBuffer = webGPU.wgpuDeviceCreateBuffer(device.value, descriptor.pointer);
-
+    
     return GPUBuffer(outputBuffer);
   }
 

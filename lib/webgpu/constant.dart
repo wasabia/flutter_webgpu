@@ -16,8 +16,8 @@ final int WGPUFrontFace_CCW = WGPUFrontFace.WGPUFrontFace_CCW;
 
 class GPUCullMode {
   static const int None = WGPUCullMode.WGPUCullMode_None;
-
   static const int Back = WGPUCullMode.WGPUCullMode_Back;
+  static const int Front = WGPUCullMode.WGPUCullMode_Front;
 }
 
 class GPUFrontFace {
@@ -36,7 +36,11 @@ final int WGPUBlendOperation_Add = WGPUBlendOperation.WGPUBlendOperation_Add;
 
 
 
-final int WGPUBufferBindingType_Storage = WGPUBufferBindingType.WGPUBufferBindingType_Storage;
+class GPUBufferBindingType {
+  static const int Storage = WGPUBufferBindingType.WGPUBufferBindingType_Storage;
+  static const int Uniform = WGPUBufferBindingType.WGPUBufferBindingType_Uniform;
+}
+
 
 final int WGPUSamplerBindingType_Undefined = WGPUSamplerBindingType.WGPUSamplerBindingType_Undefined;
 
@@ -56,6 +60,8 @@ class GPUPowerPreference {
 class GPUTextureFormat {
   static const int Undefined = WGPUTextureFormat.WGPUTextureFormat_Undefined;
 
+  static const int Depth32Float = WGPUTextureFormat.WGPUTextureFormat_Depth32Float;
+                                          
   static const int RGBA8Unorm = WGPUTextureFormat.WGPUTextureFormat_RGBA8Unorm;
   static const int BGRA8Unorm = WGPUTextureFormat.WGPUTextureFormat_BGRA8Unorm;
 

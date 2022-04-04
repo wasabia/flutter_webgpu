@@ -23,7 +23,6 @@ class GPUBuffer {
   }
 
   Pointer<Void> getMappedRange({int offset = 0, int? size}) {
-    print(" GPUBuffer getMappedRange  size 0 need confirm ");
     return Wgpu.instance.webGPU.wgpuBufferGetMappedRange(buffer, offset, size ?? 0);
   }
 

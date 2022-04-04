@@ -12,6 +12,12 @@ import 'package:flutter_webgpu_example/Example.dart';
 import 'package:flutter_webgpu_example/ExampleCapture.dart';
 import 'package:flutter_webgpu_example/ExampleCompute.dart';
 import 'package:flutter_webgpu_example/ExampleTriangle.dart';
+import 'package:flutter_webgpu_example/rotateCube.dart';
+import 'package:flutter_webgpu_example/TextureCube.dart';
+
+import 'boids.dart';
+import 'helloTriangle.dart';
+import 'helloTriangleMSAA.dart';
 
 
 void main() {
@@ -34,6 +40,9 @@ class _MyAppState extends State<MyApp> {
   Uint8List? pixels;
   ui.Image? img;
 
+  int width = 512;
+  int height = 512;
+
   @override
   void initState() {
     super.initState();
@@ -43,15 +52,19 @@ class _MyAppState extends State<MyApp> {
   }
 
   init() {
-    
-    // pixels = Example.initWebGPU();
+    // pixels = Example.render(width, height);
+    // pixels = ExampleCapture.render(width, height);
+    // pixels = ExampleCompute.render(width, height);
+    // pixels = ExampleTriangle.render(width, height);
 
-    // pixels = ExampleCapture.initWebGPU();
-    // pixels = ExampleCompute.initWebGPU();
-    pixels = ExampleTriangle.initWebGPU();
+    pixels = HelloTriangle.render(width, height);
+    // pixels = HelloTriangleMSAA.render(width, height);
+    // pixels = RotateCube.render(width, height);
+    // pixels = TextureCube.render(width, height);
+    // pixels = Boids.render(width, height);
 
     if(pixels != null) {
-      ui.decodeImageFromPixels(pixels!, 256, 256, ui.PixelFormat.rgba8888, (image) {
+      ui.decodeImageFromPixels(pixels!, width, height, ui.PixelFormat.rgba8888, (image) {
         setState(() {
           img = image;
         });
@@ -104,8 +117,8 @@ class _MyAppState extends State<MyApp> {
             ),
             Container(
               color: Colors.black,
-              width: 256,
-              height: 256,
+              width: width.toDouble(),
+              height: height.toDouble(),
               child: RawImage(image: img),
             )
           ],

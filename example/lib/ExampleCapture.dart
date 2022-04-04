@@ -10,14 +10,11 @@ import 'package:flutter_webgpu/flutter_webgpu.dart';
 class ExampleCapture {
 
 
-  static initWebGPU() {
+  static render(int width, int height) {
 
     var adapter = requestAdapter( GPURequestAdapterOptions() );
     var device = adapter.requestDevice( GPUDeviceDescriptor() );
 
-
-    int width = 256;
-    int height = 256;
  
     int bytes_per_pixel = Uint32List.bytesPerElement;
     int unpadded_bytes_per_row = width * bytes_per_pixel;

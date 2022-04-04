@@ -24,7 +24,7 @@ class GPUComputePassEncoder implements GPUProgrammablePassEncoder {
   }
 
   void end() {
-    Wgpu.instance.webGPU.wgpuComputePassEncoderEndPass(computePass);
+    Wgpu.instance.webGPU.wgpuComputePassEncoderEnd(computePass);
   }
 
   void endPass() {

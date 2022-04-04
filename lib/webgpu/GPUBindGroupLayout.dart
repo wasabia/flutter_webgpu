@@ -11,20 +11,41 @@ class GPUBindGroupLayout {
     pointer[0] = bindGroupLayout;
   }
 
+  GPUBindGroupLayout.pointer(this.pointer) {
+    
+  }
+
 }
 
 class GPUBindGroupLayoutDescriptor {
   late Pointer<WGPUBindGroupLayoutDescriptor> pointer;
 
   GPUBindGroupLayoutDescriptor({
-    required GPUBindGroupLayoutEntry entries,
+    List<GPUBindGroupLayoutEntry>? entries,
     required int entryCount
   }) {
     pointer = ffi.calloc<WGPUBindGroupLayoutDescriptor>();
     var state = pointer.ref;
     state.label = "Bind Group Layout".toNativeUtf8().cast();
     state.entryCount = entryCount;
-    state.entries = entries.pointer;
+    if(entries == null) {
+      state.entries = nullptr;
+    } else if(entries.length == 1) {
+      state.entries = entries[0].pointer;
+    } else {
+      var entryPointers = ffi.calloc<WGPUBindGroupLayoutEntry>( entries.length );
+      entries.asMap().forEach((index, entry) {
+        var pointer = entryPointers[ index ];
+        pointer.binding = entry.pointer.ref.binding;
+        pointer.visibility = entry.pointer.ref.visibility;
+        pointer.buffer = entry.pointer.ref.buffer;
+        pointer.sampler = entry.pointer.ref.sampler;
+        pointer.texture = entry.pointer.ref.texture;
+        pointer.storageTexture = entry.pointer.ref.storageTexture;
+      });
+      print(" GPUBindGroupLayoutDescriptor entries: ${entries.length} ");
+    }
+   
   }
 
 
@@ -37,7 +58,8 @@ class GPUBindGroupLayoutEntry {
 
   GPUBindGroupLayoutEntry({
     required int binding,
-    required int visibility
+    required int visibility,
+    required GPUBufferBindingLayout buffer
   }) {
     pointer = ffi.calloc<WGPUBindGroupLayoutEntry>();
     var state = pointer.ref;
@@ -45,7 +67,7 @@ class GPUBindGroupLayoutEntry {
     state.nextInChain = nullptr;
     state.binding = binding;
     state.visibility = visibility;
-    state.buffer = GPUBufferBindingLayout(type: WGPUBufferBindingType_Storage).pointer.ref;
+    state.buffer = buffer.pointer.ref;
     state.sampler = GPUSamplerBindingLayout(type: WGPUSamplerBindingType_Undefined).pointer.ref;
     state.texture = GPUTextureBindingLayout(sampleType: WGPUTextureSampleType_Undefined).pointer.ref;
     state.storageTexture = GPUStorageTextureBindingLayout(access: WGPUStorageTextureAccess_Undefined).pointer.ref;
@@ -60,11 +82,13 @@ class GPUBufferBindingLayout {
   late Pointer<WGPUBufferBindingLayout> pointer;
 
   GPUBufferBindingLayout({
-    required int type
+    required int type,
+    int? minBindingSize
   }) {
     pointer = ffi.calloc<WGPUBufferBindingLayout>();
     var state = pointer.ref;
     state.type = type;
+    state.minBindingSize = minBindingSize ?? 0;
   }
 
 }

@@ -16,8 +16,8 @@ class GPUBindGroupDescriptor {
   GPUBindGroupDescriptor({
     String? label,
     required GPUBindGroupLayout layout,
-    entries,
-    int entryCount = 1
+    List<GPUBindGroupEntry>? entries,
+    int entryCount = 0
   }) {
     pointer = ffi.calloc<WGPUBindGroupDescriptor>();
     var ref = pointer.ref;
@@ -26,9 +26,30 @@ class GPUBindGroupDescriptor {
     
     ref.layout = layout.bindGroupLayout;
 
-    if(entries != null) {
-      ref.entries = entries.pointer;
-      ref.entryCount = entryCount;
+    if(entries == null) {
+      ref.entries = nullptr;
+      ref.entryCount = 0;
+    } else if (entries.length == 1) {
+      ref.entries = entries[0].pointer;
+      ref.entryCount = 1;
+    } else {
+
+      var entryPointers = ffi.calloc<WGPUBindGroupEntry>( entries.length );
+      entries.asMap().forEach((index, entry) {
+        var pointer = entryPointers[ index ];
+        pointer.binding = entry.pointer.ref.binding;
+        pointer.offset = entry.pointer.ref.offset;
+        pointer.buffer = entry.pointer.ref.buffer;
+        pointer.size = entry.pointer.ref.size;
+        pointer.sampler = entry.pointer.ref.sampler;
+        pointer.textureView = entry.pointer.ref.textureView;
+      });
+
+      ref.entries = entryPointers;
+      ref.entryCount = entries.length;
+
+      print("GPUBindGroupDescriptor entries: ${entries.length}   ");
+ 
     }
   
   }
@@ -54,7 +75,7 @@ class GPUBindGroupEntry {
     state.binding = binding;
     if(buffer != null) state.buffer = buffer.buffer;
     state.offset = offset;
-    state.size = size!;
+    state.size = size ?? 0;
     if(sampler != null) state.sampler = sampler.sampler;
     if(textureView != null) state.textureView = textureView.textureView;
   }

@@ -5,7 +5,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_webgpu/WebGPU_Binding.dart';
+import 'package:flutter_webgpu/WebGPU_Binding.dart' hide bool;
 import 'package:ffi/ffi.dart' as ffi;
 import 'dart:ffi';
 

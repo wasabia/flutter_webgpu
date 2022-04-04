@@ -8,6 +8,11 @@ class GPURenderPipeline {
 
   }
 
+  GPUBindGroupLayout getBindGroupLayout(int index) {
+    WGPUBindGroupLayout layout = Wgpu.instance.webGPU.wgpuRenderPipelineGetBindGroupLayout(pipeline, index);
+    return GPUBindGroupLayout(layout);
+  }
+
 }
 
 
@@ -19,7 +24,7 @@ class GPURenderPipelineDescriptor {
     GPUPipelineLayout? layout,
     required GPUVertexState vertex,
     required GPUPrimitiveState primitive,
-    GPUMultisampleState? multisample,
+    required GPUMultisampleState multisample,
     required GPUFragmentState fragment,
     GPUDepthStencilState? depthStencil
 

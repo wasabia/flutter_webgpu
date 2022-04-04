@@ -30,7 +30,7 @@ class GPUTextureDescriptor {
     required GPUExtent3D size,
     int mipLevelCount = 1,
     int sampleCount = 1,
-    String dimension = "2d",
+    int? dimension,
     required int format,
     required int usage
   }) {
@@ -41,7 +41,7 @@ class GPUTextureDescriptor {
     _descriptor.size = size.pointer.ref;
     _descriptor.mipLevelCount = mipLevelCount;
     _descriptor.sampleCount = sampleCount;
-    _descriptor.dimension = WGPUTextureDimension.WGPUTextureDimension_2D;
+    _descriptor.dimension = dimension ?? GPUTextureDimension.TwoD;
     _descriptor.format = format;
     _descriptor.usage = usage;
   }

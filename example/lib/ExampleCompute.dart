@@ -10,7 +10,7 @@ import 'package:flutter_webgpu/flutter_webgpu.dart';
 class ExampleCompute {
 
 
-  static initWebGPU() {
+  static render(int width, int height) {
     Uint32List numbers = Uint32List.fromList(
       [
         1, 2, 3, 4
@@ -79,31 +79,19 @@ fn main([[builtin(global_invocation_id)]] global_id: vec3<u32>) {
     print("numbersSize: ${numbersSize} ");
 
     var bufferDesc1 = GPUBufferDescriptor(size: numbersSize, usage: GPUBufferUsage.Storage | GPUBufferUsage.CopyDst |
-                           GPUBufferUsage.CopySrc | GPUBufferUsage.MapRead);
+                           GPUBufferUsage.CopySrc | GPUBufferUsage.MapRead | GPUBufferBindingType.Uniform);
     var storageBuffer = device.createBuffer(bufferDesc1);
 
-
-
     var _bindGroupLayoutDesc = GPUBindGroupLayoutDescriptor(
-      entries: GPUBindGroupLayoutEntry(
+      entries: [GPUBindGroupLayoutEntry(
         binding: 0,
-        visibility: GPUShaderStage.Compute
-      ),
+        visibility: GPUShaderStage.Compute,
+        buffer: GPUBufferBindingLayout( type: GPUBufferBindingType.Storage )
+      )],
       entryCount: 1
     );
+    
     var bindGroupLayout = device.createBindGroupLayout( _bindGroupLayoutDesc );
-
-
-
-    var bindGroup = device.createBindGroup(GPUBindGroupDescriptor(
-      label: "Bind Group",
-      layout: bindGroupLayout,
-      entries: GPUBindGroupEntry(
-        binding: 0,
-        buffer: storageBuffer, size: numbersSize),
-      entryCount: 1
-    ));
-
     var pipelineLayout = device.createPipelineLayout(GPUPipelineLayoutDescriptor(
       bindGroupLayouts: bindGroupLayout,
       bindGroupLayoutCount: 1
@@ -119,9 +107,17 @@ fn main([[builtin(global_invocation_id)]] global_id: vec3<u32>) {
     var computePass = encoder.beginComputePass( GPUComputePassDescriptor() );
 
     
-
     computePass.setPipeline(computePipeline);
 
+
+    var bindGroup = device.createBindGroup(GPUBindGroupDescriptor(
+      label: "Bind Group",
+      layout: bindGroupLayout,
+      entries: [GPUBindGroupEntry(
+        binding: 0,
+        buffer: storageBuffer)],
+      entryCount: 1
+    ));
  
     computePass.setBindGroup(0, bindGroup, 0, null);
     computePass.dispatch(numbersLength, 1, 1);

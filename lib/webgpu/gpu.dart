@@ -6,7 +6,7 @@ void wgpuRequestAdapterCallback(int status, WGPUAdapter received, Pointer<Int8> 
   Pointer<WGPUAdapter> _adapter = userdata.cast();
   _adapter.value = received;
 
-  print("wgpuRequestAdapterCallback _adapter: ${_adapter} ${_adapter.value}");
+  print("wgpuRequestAdapterCallback success adapter: ${_adapter} ${_adapter.value}");
 }
 
 typedef WgpuRequestAdapterCallback = Void Function(Int32, WGPUAdapter, Pointer<Int8>,

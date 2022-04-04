@@ -107,11 +107,11 @@ class GPURenderPassColorAttachment {
     pointer = ffi.calloc<WGPURenderPassColorAttachment>();
     WGPURenderPassColorAttachment _attach = pointer.ref;
     if(view != null) _attach.view = view.textureView;
-    _attach.resolveTarget = nullptr;
+    _attach.resolveTarget = resolveTarget?.textureView ?? nullptr;
     _attach.loadOp = loadOp;
     _attach.storeOp = storeOp;
     if(clearColor != null) {
-      _attach.clearColor = clearColor.pointer.ref;
+      _attach.clearValue = clearColor.pointer.ref;
     }
   }
 
@@ -121,7 +121,7 @@ class GPURenderPassColorAttachment {
   }
 
   set clearColor(GPUColor color) {
-    pointer.ref.clearColor = color.pointer.ref;
+    pointer.ref.clearValue = color.pointer.ref;
   }
 
   set resolveTarget(GPUTextureView? view) {
@@ -144,16 +144,26 @@ class GPURenderPassDepthStencilAttachment {
 
   GPURenderPassDepthStencilAttachment({
     GPUTextureView? view,
+    double? clearDepth,
+    int? depthLoadOp,
     int? depthStoreOp,
-    int? stencilStoreOp
+    int? stencilStoreOp,
+    int? stencilLoadOp,
+    int? clearStencil
   }) {
     pointer = ffi.calloc<WGPURenderPassDepthStencilAttachment>();
 
-    ref.depthReadOnly = 0;
-    ref.stencilReadOnly = 0;
+    // ref.depthReadOnly = 0;
+    // ref.stencilReadOnly = 0;
+
+    
     if(view != null) ref.view = view.textureView;
     if(depthStoreOp != null) ref.depthStoreOp = depthStoreOp;
     if(stencilStoreOp != null) ref.stencilStoreOp = stencilStoreOp;
+    if(depthLoadOp != null) ref.depthLoadOp = depthLoadOp;
+    if(stencilLoadOp != null) ref.stencilLoadOp = stencilLoadOp;
+    if(clearDepth != null) ref.depthClearValue;
+    if(clearStencil != null) ref.stencilClearValue = clearStencil;
   }
 
   set view(GPUTextureView value) {
@@ -170,11 +180,11 @@ class GPURenderPassDepthStencilAttachment {
   }
 
   set clearDepth(double value) {
-    ref.clearDepth = value;
+    ref.depthClearValue = value;
   }
 
   set clearStencil(int value) {
-    ref.clearStencil = value;
+    ref.stencilClearValue = value;
   }
 
 }

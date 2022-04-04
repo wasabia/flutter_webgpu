@@ -18,12 +18,13 @@ class GPUVertexBufferLayout {
     if( attributes.length == 1 ) {
       ref.attributes = attributes[0].pointer;
     } else {
-      print("GPUVertexBufferLayout attributes TODO ");
       var attributesPointer = ffi.calloc<WGPUVertexAttribute>(attributes.length);
-      
+
       attributes.asMap().forEach((key, value) {
         var _p = attributesPointer[ key ];
-        _p = value.pointer.ref;
+        _p.format = value.pointer.ref.format;
+        _p.offset = value.pointer.ref.offset;
+        _p.shaderLocation = value.pointer.ref.shaderLocation;
       });
 
       ref.attributes = attributesPointer;

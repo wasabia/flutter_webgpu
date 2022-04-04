@@ -6,13 +6,10 @@ import 'package:ffi/ffi.dart' as ffi;
 import 'package:flutter_webgpu/flutter_webgpu.dart';
 
 class ExampleTriangle {
-  static initWebGPU() {
+  static render(int width, int height) {
     Uint32List numbers = Uint32List.fromList([1, 2, 3, 4]);
     int numbersSize = numbers.length * Uint8List.bytesPerElement;
     int numbersLength = numbersSize ~/ Uint8List.bytesPerElement;
-
-    int width = 256;
-    int height = 256;
 
     int bytes_per_pixel = Uint32List.bytesPerElement;
     int unpadded_bytes_per_row = width * bytes_per_pixel;
