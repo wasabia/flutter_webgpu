@@ -1,7 +1,7 @@
 part of webgpu;
 
 
-class GPUCommandBuffer {
+class GPUCommandBuffer extends GPUObjectBase {
   
   late Pointer<WGPUCommandBuffer> pointer;
   late WGPUCommandBuffer buffer;
@@ -15,7 +15,7 @@ class GPUCommandBuffer {
 }
 
 
-class GPUCommandBufferDescriptor {
+class GPUCommandBufferDescriptor extends GPUObjectDescriptorBase {
 
   late Pointer<WGPUCommandBufferDescriptor> pointer;
 

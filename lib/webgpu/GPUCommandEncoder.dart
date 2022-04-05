@@ -1,6 +1,6 @@
 part of webgpu;
 
-class GPUCommandEncoder {
+class GPUCommandEncoder extends GPUObjectBase {
 
   late WGPUCommandEncoder encoder;
 
@@ -63,30 +63,6 @@ class GPUCommandEncoderDescriptor extends GPUObjectDescriptorBase {
 }
 
 
-class GPURenderPassDescriptor {
-
-  late Pointer<WGPURenderPassDescriptor> pointer;
-
-  GPURenderPassDescriptor({
-    GPURenderPassColorAttachment? colorAttachments,
-    GPURenderPassDepthStencilAttachment? depthStencilAttachment,
-    // GPUQuerySet occlusionQuerySet,
-    // GPURenderPassTimestampWrites timestampWrites = []
-  }) {
-    pointer = ffi.calloc<WGPURenderPassDescriptor>();
-    WGPURenderPassDescriptor descriptor = pointer.ref;
-    descriptor.colorAttachments = colorAttachments?.pointer ?? nullptr;
-    descriptor.colorAttachmentCount = 1;
-    descriptor.depthStencilAttachment = depthStencilAttachment?.pointer ?? nullptr;
-  }
-
-  get colorAttachments => GPURenderPassColorAttachment.pointer(pointer.ref.colorAttachments);
-  get depthStencilAttachment {
-    print("depthStencilAttachment TODO ");
-    return GPURenderPassDepthStencilAttachment.pointer(pointer.ref.depthStencilAttachment);
-  }
- 
-}
 
 class GPURenderPassColorAttachment {
 
@@ -144,26 +120,25 @@ class GPURenderPassDepthStencilAttachment {
 
   GPURenderPassDepthStencilAttachment({
     GPUTextureView? view,
-    double? clearDepth,
+    double? depthClearValue,
     int? depthLoadOp,
     int? depthStoreOp,
     int? stencilStoreOp,
     int? stencilLoadOp,
-    int? clearStencil
+    int? stencilClearValue
   }) {
     pointer = ffi.calloc<WGPURenderPassDepthStencilAttachment>();
 
-    // ref.depthReadOnly = 0;
-    // ref.stencilReadOnly = 0;
-
+    ref.depthReadOnly = 0;
+    ref.stencilReadOnly = 0;
     
     if(view != null) ref.view = view.textureView;
     if(depthStoreOp != null) ref.depthStoreOp = depthStoreOp;
     if(stencilStoreOp != null) ref.stencilStoreOp = stencilStoreOp;
     if(depthLoadOp != null) ref.depthLoadOp = depthLoadOp;
     if(stencilLoadOp != null) ref.stencilLoadOp = stencilLoadOp;
-    if(clearDepth != null) ref.depthClearValue;
-    if(clearStencil != null) ref.stencilClearValue = clearStencil;
+    if(depthClearValue != null) ref.depthClearValue = depthClearValue;
+    if(stencilClearValue != null) ref.stencilClearValue = stencilClearValue;
   }
 
   set view(GPUTextureView value) {

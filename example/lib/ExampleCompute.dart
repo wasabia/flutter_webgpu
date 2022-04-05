@@ -99,7 +99,7 @@ fn main([[builtin(global_invocation_id)]] global_id: vec3<u32>) {
 
     var computePipeline = device.createComputePipeline(GPUComputePipelineDescriptor(
       layout: pipelineLayout,
-      compute: GPUProgrammableStageDescriptor(module: shader, entryPoint: 'main')
+      compute: GPUProgrammableStage(module: shader, entryPoint: 'main')
     ));
 
     var encoder = device.createCommandEncoder( GPUCommandEncoderDescriptor() );

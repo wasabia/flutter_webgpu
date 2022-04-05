@@ -1,6 +1,6 @@
 part of webgpu;
 
-class GPUShaderModule {
+class GPUShaderModule extends GPUObjectBase {
 
   late WGPUShaderModule shader;
 
@@ -11,7 +11,7 @@ class GPUShaderModule {
 }
 
 
-class GPUShaderModuleDescriptor {
+class GPUShaderModuleDescriptor extends GPUObjectDescriptorBase {
   late Pointer<WGPUShaderModuleDescriptor> pointer;
 
   GPUShaderModuleDescriptor({

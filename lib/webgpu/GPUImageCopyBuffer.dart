@@ -3,6 +3,7 @@ part of webgpu;
 
 class GPUImageCopyBuffer {
   
+  @override
   late Pointer<WGPUImageCopyBuffer> pointer;
 
   GPUImageCopyBuffer({

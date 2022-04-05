@@ -193,18 +193,18 @@ fn main() -> [[location(0)]] vec4<f32> {
         frontFace: GPUFrontFace.CCW
       ),
       multisample: GPUMultisampleState(),
-      depthStencil: GPUDepthStencilState(
-        depthWriteEnabled: true,
-        depthCompare: GPUCompareFunction.Greater,
-        format: GPUTextureFormat.Depth32Float,
-        stencilFront: GPUStencilFaceState(
-          compare:  GPUCompareFunction.Always
-        ),
-        stencilBack: GPUStencilFaceState(compare: GPUCompareFunction.Always),
-        depthBias: 2,
-        depthBiasSlopeScale: 2.0,
-        depthBiasClamp: 0.0
-      )
+      // depthStencil: GPUDepthStencilState(
+      //   depthWriteEnabled: true,
+      //   depthCompare: GPUCompareFunction.Greater,
+      //   format: GPUTextureFormat.Depth32Float,
+      //   stencilFront: GPUStencilFaceState(
+      //     compare:  GPUCompareFunction.Always
+      //   ),
+      //   stencilBack: GPUStencilFaceState(compare: GPUCompareFunction.Always),
+      //   depthBias: 2,
+      //   depthBiasSlopeScale: 2.0,
+      //   depthBiasClamp: 0.0
+      // )
     );
 
 
@@ -287,6 +287,7 @@ fn main() -> [[location(0)]] vec4<f32> {
     ));
     GPUTextureView textureView0 = texture0.createView(GPUTextureViewDescriptor());
 
+
     var renderPassDescriptor = GPURenderPassDescriptor(
       colorAttachments: GPURenderPassColorAttachment(
         // view: textureView0,
@@ -296,24 +297,23 @@ fn main() -> [[location(0)]] vec4<f32> {
         storeOp: GPUStoreOp.Store,
         loadOp: GPULoadOp.Clear
       ),
-      depthStencilAttachment: GPURenderPassDepthStencilAttachment(
-        view: depthTexture.createView(GPUTextureViewDescriptor()),
-        depthLoadOp: GPULoadOp.Clear,
-        depthStoreOp: GPUStoreOp.Store,
-        clearDepth: 0.0,
-        // stencilLoadOp: GPULoadOp.Clear,
-        // stencilStoreOp: GPUStoreOp.Store,
-        // clearStencil: 0,
-      ),
+      // depthStencilAttachment: GPURenderPassDepthStencilAttachment(
+      //   view: depthTexture.createView(GPUTextureViewDescriptor()),
+      //   depthLoadOp: GPULoadOp.Clear,
+      //   depthStoreOp: GPUStoreOp.Store,
+      //   depthClearValue: 0.0,
+      //   // stencilLoadOp: GPULoadOp.Clear,
+      //   // stencilStoreOp: GPUStoreOp.Store,
+      //   // stencilClearValue: 0,
+      // ),
     );
-
 
     var passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);
     passEncoder.setPipeline(pipeline);
     passEncoder.setBindGroup(0, uniformBindGroup);
     passEncoder.setVertexBuffer(0, verticesBuffer);
     passEncoder.draw(cubeVertexCount, 1, 0, 0);
-    passEncoder.endPass();
+    passEncoder.end();
 
 
     var copyTexture =

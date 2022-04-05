@@ -1,13 +1,14 @@
 part of webgpu;
 
 
-class GPURenderPipeline {
+class GPURenderPipeline extends GPUObjectBase implements GPUPipelineBase {
   late WGPURenderPipeline pipeline;
 
   GPURenderPipeline(this.pipeline) {
 
   }
 
+  @override
   GPUBindGroupLayout getBindGroupLayout(int index) {
     WGPUBindGroupLayout layout = Wgpu.binding.wgpuRenderPipelineGetBindGroupLayout(pipeline, index);
     return GPUBindGroupLayout(layout);
@@ -16,7 +17,7 @@ class GPURenderPipeline {
 }
 
 
-class GPURenderPipelineDescriptor {
+class GPURenderPipelineDescriptor extends GPUPipelineDescriptorBase {
 
   late Pointer<WGPURenderPipelineDescriptor> pointer;
 

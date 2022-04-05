@@ -1,6 +1,6 @@
 part of webgpu;
 
-class GPUPipelineLayout {
+class GPUPipelineLayout extends GPUObjectBase {
 
   late WGPUPipelineLayout pipelineLayout;
 
@@ -13,7 +13,7 @@ class GPUPipelineLayout {
 }
 
 
-class GPUPipelineLayoutDescriptor {
+class GPUPipelineLayoutDescriptor extends GPUObjectDescriptorBase {
 
   late Pointer<WGPUPipelineLayoutDescriptor> pointer;
 

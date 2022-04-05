@@ -1,7 +1,7 @@
 part of webgpu;
 
 
-class GPUComputePassEncoder implements GPUProgrammablePassEncoder {
+class GPUComputePassEncoder extends GPUObjectBase implements GPUProgrammablePassEncoder {
 
   late WGPUComputePassEncoder computePass;
   
@@ -34,7 +34,7 @@ class GPUComputePassEncoder implements GPUProgrammablePassEncoder {
 }
 
 
-class GPUComputePassDescriptor {
+class GPUComputePassDescriptor extends GPUObjectDescriptorBase {
 
   late Pointer<WGPUComputePassDescriptor> pointer;
 

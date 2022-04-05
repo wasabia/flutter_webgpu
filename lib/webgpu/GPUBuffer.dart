@@ -7,7 +7,7 @@ void readBufferMap(int status, Pointer<Void> userdata) {
 typedef ReadBufferMap = Void Function(Int32, Pointer<Void>);
 
 
-class GPUBuffer {
+class GPUBuffer extends GPUObjectBase {
   late WGPUBuffer buffer;
   late Pointer<WGPUBuffer> pointer;
 
@@ -32,7 +32,7 @@ class GPUBuffer {
 
 }
 
-class GPUBufferDescriptor {
+class GPUBufferDescriptor extends GPUObjectDescriptorBase {
 
   late Pointer<WGPUBufferDescriptor> pointer;
 

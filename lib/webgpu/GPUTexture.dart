@@ -22,7 +22,7 @@ class GPUTexture extends GPUObjectBase {
 }
 
 
-class GPUTextureDescriptor {
+class GPUTextureDescriptor extends GPUObjectDescriptorBase {
 
   late Pointer<WGPUTextureDescriptor> pointer;
 

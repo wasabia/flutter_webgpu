@@ -1,6 +1,6 @@
 part of webgpu;
 
-class GPUSampler {
+class GPUSampler extends GPUObjectBase {
   late WGPUSampler sampler;
 
   GPUSampler(this.sampler) {

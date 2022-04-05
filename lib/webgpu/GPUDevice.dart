@@ -1,6 +1,6 @@
 part of webgpu;
 
-class GPUDevice {
+class GPUDevice extends GPUObjectBase {
   late Pointer<WGPUDevice> device;
 
   get webGPU => Wgpu.binding;
@@ -8,16 +8,12 @@ class GPUDevice {
   GPUQueue? _queue;
 
   GPUQueue get queue {
-    if(_queue == null) {
-      _queue = GPUQueue( webGPU.wgpuDeviceGetQueue(device.value) );
-    }
+    _queue ??= GPUQueue( webGPU.wgpuDeviceGetQueue(device.value) );
     
     return _queue!;
   }
   
-  GPUDevice(this.device) {
-  
-  }
+  GPUDevice(this.device) {}
 
 
   GPUCommandEncoder createCommandEncoder([GPUCommandEncoderDescriptor? descriptor]) {
@@ -81,24 +77,22 @@ class GPUDevice {
   }
 
 
-  poll([bool forceWait = true]) {
+  void poll([bool forceWait = true]) {
     webGPU.wgpuDevicePoll(device.value, forceWait);
   }
 
 
-  setUncapturedErrorCallback() {
+  void setUncapturedErrorCallback() {
     var _callback = Pointer.fromFunction<HandleUncapturedErrorNative>(handleUncapturedError);
     webGPU.wgpuDeviceSetUncapturedErrorCallback(device.value, _callback, nullptr);
   }
 
 
-  setDeviceLostCallback() {
+  void setDeviceLostCallback() {
     var _callback = Pointer.fromFunction<HandleDeviceLostNative>(handleDeviceLost);
     webGPU.wgpuDeviceSetDeviceLostCallback(device.value, _callback, nullptr);
   }
-   
-
-
+  
 }
 
 void handleDeviceLost(int reason, Pointer<Int8> message,

@@ -1,6 +1,6 @@
 part of webgpu;
 
-class GPUBindGroup {
+class GPUBindGroup extends GPUObjectBase {
   late WGPUBindGroup bindGroup;
 
   GPUBindGroup(this.bindGroup) {

@@ -136,8 +136,10 @@ class GPUAddressMode {
 
 
 class GPULoadOp {
-  static const int Load = WGPULoadOp.WGPULoadOp_Load;
+  static const int Undefined = WGPULoadOp.WGPULoadOp_Undefined;
   static const int Clear = WGPULoadOp.WGPULoadOp_Clear;
+  static const int Load = WGPULoadOp.WGPULoadOp_Load;
+  static const int Force32 = WGPULoadOp.WGPULoadOp_Force32;
 }
 
 class GPUVertexFormat {
@@ -291,10 +293,10 @@ class GPUShaderStage {
 
 
 class GPUStoreOp {
-
+  static const int Undefined = WGPUStoreOp.WGPUStoreOp_Undefined;
   static const int Store = WGPUStoreOp.WGPUStoreOp_Store;
   static const int Discard = WGPUStoreOp.WGPUStoreOp_Discard;
-
+  static const int Force32 = WGPUStoreOp.WGPUStoreOp_Force32;
 }
 
 class GPUTextureViewDimension {

@@ -56,7 +56,7 @@ class ExampleCapture {
     var renderPass = encoder.beginRenderPass(GPURenderPassDescriptor(
       colorAttachments: attach
     ));
-    renderPass.endPass();
+    renderPass.end();
     
     print(" end pass .... ");
 

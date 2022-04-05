@@ -40,3 +40,9 @@ part 'GPUObjectBase.dart';
 part 'GPUSampler.dart';
 part 'GPUProgrammablePassEncoder.dart';
 part 'GPUVertexBufferLayout.dart';
+part 'GPUBindGroupLayoutEntry.dart';
+part 'GPUPipelineBase.dart';
+part 'GPUPipelineDescriptorBase.dart';
+part 'GPURenderPassDescriptor.dart';
+part 'GPURenderEncoderBase.dart';
+

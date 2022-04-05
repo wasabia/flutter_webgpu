@@ -1,14 +1,13 @@
 part of webgpu;
 
-class GPUComputePipeline {
+class GPUComputePipeline extends GPUObjectBase implements GPUPipelineBase {
 
   late WGPUComputePipeline computePipeline;
 
-  GPUComputePipeline(this.computePipeline) {
-    
-  }
+  GPUComputePipeline(this.computePipeline) {}
 
 
+  @override
   GPUBindGroupLayout getBindGroupLayout(int index) {
     WGPUBindGroupLayout layout = Wgpu.binding.wgpuComputePipelineGetBindGroupLayout(computePipeline, index);
     return GPUBindGroupLayout(layout);
@@ -17,12 +16,12 @@ class GPUComputePipeline {
 }
 
 
-class GPUComputePipelineDescriptor {
+class GPUComputePipelineDescriptor extends GPUPipelineDescriptorBase {
 
   late Pointer<WGPUComputePipelineDescriptor> pointer;
 
   GPUComputePipelineDescriptor({
-    required GPUProgrammableStageDescriptor compute,
+    required GPUProgrammableStage compute,
     GPUPipelineLayout? layout
   }) {
     pointer = ffi.calloc<WGPUComputePipelineDescriptor>();
@@ -37,10 +36,10 @@ class GPUComputePipelineDescriptor {
 }
 
 
-class GPUProgrammableStageDescriptor {
+class GPUProgrammableStage {
   late Pointer<WGPUProgrammableStageDescriptor> pointer;
 
-  GPUProgrammableStageDescriptor({
+  GPUProgrammableStage({
     required GPUShaderModule module,
     required String entryPoint
   }) {

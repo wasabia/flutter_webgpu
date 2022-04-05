@@ -112,7 +112,7 @@ fn main() -> [[location(0)]] vec4<f32> {
     var passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);
     passEncoder.setPipeline(pipeline);
     passEncoder.draw(3, 1, 0, 0);
-    passEncoder.endPass();
+    passEncoder.end();
 
 
 

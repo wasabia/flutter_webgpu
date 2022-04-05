@@ -1,7 +1,7 @@
 part of webgpu;
 
 
-class GPUQueue {
+class GPUQueue extends GPUObjectBase {
 
   late WGPUQueue queue;
 

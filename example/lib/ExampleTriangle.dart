@@ -131,7 +131,7 @@ fn fs_main() -> [[location(0)]] vec4<f32> {
        
     renderPass.draw(3, 1, 0, 0);
   
-    renderPass.endPass();
+    renderPass.end();
 
     var copyTexture =
         GPUImageCopyTexture(texture: texture, origin: GPUOrigin3D());

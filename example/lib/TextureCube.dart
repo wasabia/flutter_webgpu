@@ -324,12 +324,12 @@ fn main([[location(0)]] fragUV: vec2<f32>,
       ),
       depthStencilAttachment: GPURenderPassDepthStencilAttachment(
         view: depthTexture.createView(GPUTextureViewDescriptor()),
-        depthLoadOp: GPULoadOp.Clear,
-        depthStoreOp: GPUStoreOp.Store,
-        clearDepth: 0.0,
+        // depthLoadOp: GPULoadOp.Clear,
+        // depthStoreOp: GPUStoreOp.Store,
+        // depthClearValue: 0.0,
         // stencilLoadOp: GPULoadOp.Clear,
         // stencilStoreOp: GPUStoreOp.Store,
-        // clearStencil: 0,
+        // stencilClearValue: 0,
       ),
     );
 
@@ -339,7 +339,7 @@ fn main([[location(0)]] fragUV: vec2<f32>,
     passEncoder.setBindGroup(0, uniformBindGroup);
     passEncoder.setVertexBuffer(0, verticesBuffer);
     passEncoder.draw(cubeVertexCount, 1, 0, 0);
-    passEncoder.endPass();
+    passEncoder.end();
 
 
     var copyTexture =

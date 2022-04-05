@@ -327,7 +327,7 @@ class Boids {
 
 
     var compute_pipeline = device.createComputePipeline(
-      GPUComputePipelineDescriptor(layout: compute_pipeline_layout, compute: GPUProgrammableStageDescriptor(module: compute_shader, entryPoint: 'main'))
+      GPUComputePipelineDescriptor(layout: compute_pipeline_layout, compute: GPUProgrammableStage(module: compute_shader, entryPoint: 'main'))
     );
 
 
@@ -457,10 +457,10 @@ class Boids {
         view: depthTexture.createView(GPUTextureViewDescriptor()),
         depthLoadOp: GPULoadOp.Clear,
         depthStoreOp: GPUStoreOp.Store,
-        clearDepth: 0.0,
+        depthClearValue: 0.0,
         // stencilLoadOp: GPULoadOp.Clear,
         // stencilStoreOp: GPUStoreOp.Store,
-        // clearStencil: 0,
+        // stencilClearValue: 0,
       ),
     );
 

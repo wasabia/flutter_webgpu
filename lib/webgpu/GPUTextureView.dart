@@ -1,7 +1,7 @@
 part of webgpu;
 
 
-class GPUTextureView {
+class GPUTextureView extends GPUObjectBase {
 
   late WGPUTextureView textureView;
 
@@ -12,7 +12,7 @@ class GPUTextureView {
 }
 
 
-class GPUTextureViewDescriptor {
+class GPUTextureViewDescriptor extends GPUObjectDescriptorBase {
 
   late Pointer<WGPUTextureViewDescriptor> pointer;
 
