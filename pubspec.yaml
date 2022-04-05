@@ -1,7 +1,7 @@
 name: flutter_webgpu
-description: A new flutter plugin project.
+description: cross-platform call WebGPU API by Dart through dart:ffi. 3D programming in the cross-platform.  Provides WebGPU with Texture Widget on Flutter.
 version: 0.0.1
-homepage:
+homepage: https://github.com/wasabia/flutter_webgpu
 
 environment:
   sdk: ">=2.15.1 <3.0.0"

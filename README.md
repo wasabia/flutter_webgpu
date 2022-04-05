@@ -1,13 +1,20 @@
 # flutter_webgpu
+cross-platform call WebGPU API by Dart through dart:ffi. 3D programming in the cross-platform.  Provides WebGPU with Texture Widget on Flutter. 
 
 webgpu in flutter, base on [gfx-rs/wgpu](https://github.com/gfx-rs/wgpu)
 
 in progress...
 
 
+will be used by [three_dart](https://github.com/wasabia/three_dart)
 
 
-### Develop
+# Contributing
+
+Pull Request please!
+
+
+### Development
 
 update webgpu-headers submodule
 directory: ./ffi/webgpu-headers
