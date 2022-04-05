@@ -11,20 +11,20 @@ class GPUComputePassEncoder implements GPUProgrammablePassEncoder {
 
 
   void setPipeline(GPUComputePipeline pipeline) {
-    Wgpu.instance.webGPU.wgpuComputePassEncoderSetPipeline(computePass, pipeline.computePipeline);
+    Wgpu.binding.wgpuComputePassEncoderSetPipeline(computePass, pipeline.computePipeline);
   }
 
   @override
   void setBindGroup(int v0, GPUBindGroup bindGroup, [int v1 = 0, v2]) {
-    Wgpu.instance.webGPU.wgpuComputePassEncoderSetBindGroup(computePass, v0, bindGroup.bindGroup, v1, v2 ?? nullptr);
+    Wgpu.binding.wgpuComputePassEncoderSetBindGroup(computePass, v0, bindGroup.bindGroup, v1, v2 ?? nullptr);
   }
 
   void dispatch(int workgroupCountX, [int workgroupCountY = 1, int workgroupCountZ = 1]) {
-    Wgpu.instance.webGPU.wgpuComputePassEncoderDispatch(computePass, workgroupCountX, workgroupCountY, workgroupCountZ);
+    Wgpu.binding.wgpuComputePassEncoderDispatch(computePass, workgroupCountX, workgroupCountY, workgroupCountZ);
   }
 
   void end() {
-    Wgpu.instance.webGPU.wgpuComputePassEncoderEnd(computePass);
+    Wgpu.binding.wgpuComputePassEncoderEnd(computePass);
   }
 
   void endPass() {

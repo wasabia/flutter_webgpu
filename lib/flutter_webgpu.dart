@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 export './WebGPU_Binding.dart';
-export './WebGPU_Binding_Extra.dart';
 export 'package:flutter_webgpu/webgpu/index.dart';
 
 

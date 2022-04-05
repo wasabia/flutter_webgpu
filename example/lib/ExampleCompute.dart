@@ -146,6 +146,7 @@ fn main([[builtin(global_invocation_id)]] global_id: vec3<u32>) {
 
     Pointer<Uint32> pixles = data.cast<Uint32>();
 
+    print(" compute result: ");
     print( pixles.asTypedList(numbers.length) );
 
     stagingBuffer.unmap();

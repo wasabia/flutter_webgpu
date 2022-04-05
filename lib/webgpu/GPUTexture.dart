@@ -10,13 +10,13 @@ class GPUTexture extends GPUObjectBase {
 
   GPUTextureView createView([GPUTextureViewDescriptor? descriptor]) {
 
-    WGPUTextureView textureView = Wgpu.instance.webGPU.wgpuTextureCreateView(texture, (descriptor ?? GPUTextureViewDescriptor()).pointer);
+    WGPUTextureView textureView = Wgpu.binding.wgpuTextureCreateView(texture, (descriptor ?? GPUTextureViewDescriptor()).pointer);
 
     return GPUTextureView(textureView);
   }
 
   destroy() {
-    Wgpu.instance.webGPU.wgpuTextureDestroy(texture);
+    Wgpu.binding.wgpuTextureDestroy(texture);
   }
 
 }

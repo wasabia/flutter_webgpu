@@ -10,21 +10,21 @@ class GPUCommandEncoder {
 
   GPURenderPassEncoder beginRenderPass(GPURenderPassDescriptor descriptor) {
 
-    WGPURenderPassEncoder renderPass = Wgpu.instance.webGPU.wgpuCommandEncoderBeginRenderPass(encoder, descriptor.pointer);
+    WGPURenderPassEncoder renderPass = Wgpu.binding.wgpuCommandEncoderBeginRenderPass(encoder, descriptor.pointer);
 
     return GPURenderPassEncoder(renderPass);
   }
 
 
   GPUComputePassEncoder beginComputePass([GPUComputePassDescriptor? descriptor]) {
-    WGPUComputePassEncoder computePass = Wgpu.instance.webGPU.wgpuCommandEncoderBeginComputePass(
+    WGPUComputePassEncoder computePass = Wgpu.binding.wgpuCommandEncoderBeginComputePass(
       encoder, descriptor?.pointer ?? nullptr );
 
     return GPUComputePassEncoder(computePass);
   }
 
   void copyTextureToBuffer(GPUImageCopyTexture source, GPUImageCopyBuffer destination, GPUExtent3D copySize) {
-    Wgpu.instance.webGPU.wgpuCommandEncoderCopyTextureToBuffer(
+    Wgpu.binding.wgpuCommandEncoderCopyTextureToBuffer(
       encoder, source.pointer, destination.pointer, copySize.pointer);
   }
 
@@ -34,12 +34,12 @@ class GPUCommandEncoder {
         GPUBuffer destination,
         int destinationOffset,
         int size) {
-    Wgpu.instance.webGPU.wgpuCommandEncoderCopyBufferToBuffer(
+    Wgpu.binding.wgpuCommandEncoderCopyBufferToBuffer(
       encoder, source.buffer, sourceOffset, destination.buffer, destinationOffset, size);
   }
 
   GPUCommandBuffer finish([GPUCommandBufferDescriptor? descriptor]) {
-    WGPUCommandBuffer buffer = Wgpu.instance.webGPU.wgpuCommandEncoderFinish(encoder, descriptor?.pointer ?? nullptr);
+    WGPUCommandBuffer buffer = Wgpu.binding.wgpuCommandEncoderFinish(encoder, descriptor?.pointer ?? nullptr);
 
     return GPUCommandBuffer(buffer);
   }

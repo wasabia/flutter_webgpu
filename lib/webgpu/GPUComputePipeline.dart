@@ -10,7 +10,7 @@ class GPUComputePipeline {
 
 
   GPUBindGroupLayout getBindGroupLayout(int index) {
-    WGPUBindGroupLayout layout = Wgpu.instance.webGPU.wgpuComputePipelineGetBindGroupLayout(computePipeline, index);
+    WGPUBindGroupLayout layout = Wgpu.binding.wgpuComputePipelineGetBindGroupLayout(computePipeline, index);
     return GPUBindGroupLayout(layout);
   }
 

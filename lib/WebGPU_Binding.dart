@@ -68,19 +68,20 @@ class WebGPUBinding {
   late final _wgpuAdapterEnumerateFeatures = _wgpuAdapterEnumerateFeaturesPtr
       .asFunction<int Function(WGPUAdapter, ffi.Pointer<ffi.Int32>)>();
 
-  int wgpuAdapterGetLimits(
+  bool wgpuAdapterGetLimits(
     WGPUAdapter adapter,
     ffi.Pointer<WGPUSupportedLimits> limits,
   ) {
     return _wgpuAdapterGetLimits(
-      adapter,
-      limits,
-    );
+          adapter,
+          limits,
+        ) !=
+        0;
   }
 
   late final _wgpuAdapterGetLimitsPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int32 Function(WGPUAdapter,
+          ffi.Uint8 Function(WGPUAdapter,
               ffi.Pointer<WGPUSupportedLimits>)>>('wgpuAdapterGetLimits');
   late final _wgpuAdapterGetLimits = _wgpuAdapterGetLimitsPtr.asFunction<
       int Function(WGPUAdapter, ffi.Pointer<WGPUSupportedLimits>)>();
@@ -103,18 +104,19 @@ class WebGPUBinding {
       _wgpuAdapterGetPropertiesPtr.asFunction<
           void Function(WGPUAdapter, ffi.Pointer<WGPUAdapterProperties>)>();
 
-  int wgpuAdapterHasFeature(
+  bool wgpuAdapterHasFeature(
     WGPUAdapter adapter,
     int feature,
   ) {
     return _wgpuAdapterHasFeature(
-      adapter,
-      feature,
-    );
+          adapter,
+          feature,
+        ) !=
+        0;
   }
 
   late final _wgpuAdapterHasFeaturePtr =
-      _lookup<ffi.NativeFunction<ffi.Int32 Function(WGPUAdapter, ffi.Int32)>>(
+      _lookup<ffi.NativeFunction<ffi.Uint8 Function(WGPUAdapter, ffi.Int32)>>(
           'wgpuAdapterHasFeature');
   late final _wgpuAdapterHasFeature =
       _wgpuAdapterHasFeaturePtr.asFunction<int Function(WGPUAdapter, int)>();
@@ -1101,19 +1103,20 @@ class WebGPUBinding {
   late final _wgpuDeviceEnumerateFeatures = _wgpuDeviceEnumerateFeaturesPtr
       .asFunction<int Function(WGPUDevice, ffi.Pointer<ffi.Int32>)>();
 
-  int wgpuDeviceGetLimits(
+  bool wgpuDeviceGetLimits(
     WGPUDevice device,
     ffi.Pointer<WGPUSupportedLimits> limits,
   ) {
     return _wgpuDeviceGetLimits(
-      device,
-      limits,
-    );
+          device,
+          limits,
+        ) !=
+        0;
   }
 
   late final _wgpuDeviceGetLimitsPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int32 Function(WGPUDevice,
+          ffi.Uint8 Function(WGPUDevice,
               ffi.Pointer<WGPUSupportedLimits>)>>('wgpuDeviceGetLimits');
   late final _wgpuDeviceGetLimits = _wgpuDeviceGetLimitsPtr
       .asFunction<int Function(WGPUDevice, ffi.Pointer<WGPUSupportedLimits>)>();
@@ -1132,37 +1135,39 @@ class WebGPUBinding {
   late final _wgpuDeviceGetQueue =
       _wgpuDeviceGetQueuePtr.asFunction<WGPUQueue Function(WGPUDevice)>();
 
-  int wgpuDeviceHasFeature(
+  bool wgpuDeviceHasFeature(
     WGPUDevice device,
     int feature,
   ) {
     return _wgpuDeviceHasFeature(
-      device,
-      feature,
-    );
+          device,
+          feature,
+        ) !=
+        0;
   }
 
   late final _wgpuDeviceHasFeaturePtr =
-      _lookup<ffi.NativeFunction<ffi.Int32 Function(WGPUDevice, ffi.Int32)>>(
+      _lookup<ffi.NativeFunction<ffi.Uint8 Function(WGPUDevice, ffi.Int32)>>(
           'wgpuDeviceHasFeature');
   late final _wgpuDeviceHasFeature =
       _wgpuDeviceHasFeaturePtr.asFunction<int Function(WGPUDevice, int)>();
 
-  int wgpuDevicePopErrorScope(
+  bool wgpuDevicePopErrorScope(
     WGPUDevice device,
     WGPUErrorCallback callback,
     ffi.Pointer<ffi.Void> userdata,
   ) {
     return _wgpuDevicePopErrorScope(
-      device,
-      callback,
-      userdata,
-    );
+          device,
+          callback,
+          userdata,
+        ) !=
+        0;
   }
 
   late final _wgpuDevicePopErrorScopePtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int32 Function(WGPUDevice, WGPUErrorCallback,
+          ffi.Uint8 Function(WGPUDevice, WGPUErrorCallback,
               ffi.Pointer<ffi.Void>)>>('wgpuDevicePopErrorScope');
   late final _wgpuDevicePopErrorScope = _wgpuDevicePopErrorScopePtr.asFunction<
       int Function(WGPUDevice, WGPUErrorCallback, ffi.Pointer<ffi.Void>)>();
@@ -2261,19 +2266,19 @@ class WebGPUBinding {
 
   void wgpuDevicePoll(
     WGPUDevice device,
-    ffi.Pointer<bool> force_wait,
+    bool force_wait,
   ) {
     return _wgpuDevicePoll(
       device,
-      force_wait,
+      force_wait ? 1 : 0,
     );
   }
 
-  late final _wgpuDevicePollPtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(WGPUDevice, ffi.Pointer<bool>)>>(
-      'wgpuDevicePoll');
-  late final _wgpuDevicePoll = _wgpuDevicePollPtr
-      .asFunction<void Function(WGPUDevice, ffi.Pointer<bool>)>();
+  late final _wgpuDevicePollPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(WGPUDevice, ffi.Uint8)>>(
+          'wgpuDevicePoll');
+  late final _wgpuDevicePoll =
+      _wgpuDevicePollPtr.asFunction<void Function(WGPUDevice, int)>();
 
   void wgpuSetLogCallback(
     WGPULogCallback callback,
@@ -3307,7 +3312,7 @@ class WGPUBufferBindingLayout extends ffi.Struct {
   @ffi.Int32()
   external int type;
 
-  @ffi.Int32()
+  @ffi.Uint8()
   external int hasDynamicOffset;
 
   @ffi.Uint64()
@@ -3325,7 +3330,7 @@ class WGPUBufferDescriptor extends ffi.Struct {
   @ffi.Uint64()
   external int size;
 
-  @ffi.Int32()
+  @ffi.Uint8()
   external int mappedAtCreation;
 }
 
@@ -3504,7 +3509,7 @@ class WGPUMultisampleState extends ffi.Struct {
   @ffi.Uint32()
   external int mask;
 
-  @ffi.Int32()
+  @ffi.Uint8()
   external int alphaToCoverageEnabled;
 }
 
@@ -3535,7 +3540,7 @@ typedef WGPUBindGroupLayout = ffi.Pointer<WGPUBindGroupLayoutImpl>;
 class WGPUPrimitiveDepthClipControl extends ffi.Struct {
   external WGPUChainedStruct chain;
 
-  @ffi.Int32()
+  @ffi.Uint8()
   external int unclippedDepth;
 }
 
@@ -3600,10 +3605,10 @@ class WGPURenderBundleEncoderDescriptor extends ffi.Struct {
   @ffi.Uint32()
   external int sampleCount;
 
-  @ffi.Int32()
+  @ffi.Uint8()
   external int depthReadOnly;
 
-  @ffi.Int32()
+  @ffi.Uint8()
   external int stencilReadOnly;
 }
 
@@ -3619,7 +3624,7 @@ class WGPURenderPassDepthStencilAttachment extends ffi.Struct {
   @ffi.Float()
   external double depthClearValue;
 
-  @ffi.Int32()
+  @ffi.Uint8()
   external int depthReadOnly;
 
   @ffi.Int32()
@@ -3631,7 +3636,7 @@ class WGPURenderPassDepthStencilAttachment extends ffi.Struct {
   @ffi.Uint32()
   external int stencilClearValue;
 
-  @ffi.Int32()
+  @ffi.Uint8()
   external int stencilReadOnly;
 }
 
@@ -3653,7 +3658,7 @@ class WGPURequestAdapterOptions extends ffi.Struct {
   @ffi.Int32()
   external int powerPreference;
 
-  @ffi.Int32()
+  @ffi.Uint8()
   external int forceFallbackAdapter;
 }
 
@@ -3844,7 +3849,7 @@ class WGPUTextureBindingLayout extends ffi.Struct {
   @ffi.Int32()
   external int viewDimension;
 
-  @ffi.Int32()
+  @ffi.Uint8()
   external int multisampled;
 }
 
@@ -3964,7 +3969,7 @@ class WGPUDepthStencilState extends ffi.Struct {
   @ffi.Int32()
   external int format;
 
-  @ffi.Int32()
+  @ffi.Uint8()
   external int depthWriteEnabled;
 
   @ffi.Int32()
@@ -4322,7 +4327,6 @@ class WGPUDeviceExtras extends ffi.Struct {
   external ffi.Pointer<ffi.Int8> tracePath;
 }
 
-typedef bool = ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ffi.Int32>)>;
 typedef WGPULogCallback = ffi.Pointer<
     ffi.NativeFunction<ffi.Void Function(ffi.Int32, ffi.Pointer<ffi.Int8>)>>;
 
@@ -4363,8 +4367,6 @@ const int _DARWIN_FEATURE_64_BIT_INODE = 1;
 const int _DARWIN_FEATURE_ONLY_UNIX_CONFORMANCE = 1;
 
 const int _DARWIN_FEATURE_UNIX_CONFORMANCE = 3;
-
-const int __has_ptrcheck = 0;
 
 const int __DARWIN_NULL = 0;
 
@@ -4501,6 +4503,12 @@ const int __DARWIN_WEOF = -1;
 const int _FORTIFY_SOURCE = 2;
 
 const int NULL = 0;
+
+const int true1 = 1;
+
+const int false1 = 0;
+
+const int __bool_true_false_are_defined = 1;
 
 const int WGPU_ARRAY_LAYER_COUNT_UNDEFINED = 4294967295;
 

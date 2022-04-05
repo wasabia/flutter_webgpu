@@ -1,20 +1,19 @@
 part of webgpu;
 
 class Wgpu {
+  late WebGPUBinding _webGPU;
+  WebGPUBinding get webGPU => _webGPU;
+
   static Wgpu? _instance;
   static Wgpu get instance {
-    if(_instance == null) {
-      _instance = Wgpu();
-    }
+    _instance ??= Wgpu();
     return _instance!;
   }
 
-  late WebGPUBinding _webGPU;
-
-  WebGPUBinding get webGPU => _webGPU;
+  static WebGPUBinding get binding => instance.webGPU;
 
   Wgpu() {
-    final DynamicLibrary dynamicLibrary = Platform.isAndroid ? DynamicLibrary.open("libgreeter.so") : DynamicLibrary.process();
+    final DynamicLibrary dynamicLibrary = Platform.isAndroid ? DynamicLibrary.open("libwgpu_native.so") : DynamicLibrary.process();
 
     _webGPU = WebGPUBinding(dynamicLibrary);
   }

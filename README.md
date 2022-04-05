@@ -7,18 +7,19 @@ in progress...
 
 
 
-## Run
+### Develop
 
-### update webgpu-headers submodule
-ffi/webgpu-headers directory:
+update webgpu-headers submodule
+directory: ./ffi/webgpu-headers
 
 ```
 git submodule update --init
 ```
 
-### generate header binding
 
+generate header binding
 will update code flutter_webgpu/lib/WebGPU_Binding.dart
+directory: ./
 
 ```
 // flutter_webgpu
@@ -26,9 +27,8 @@ dart run ffigen --config config.yaml
 ```
 
 
-### generate the wgpu static library
-
-flutter_webgpu/native/wgpu-native
+generate the wgpu static library
+directory: ./native/wgpu-native
 
 ```
 make lib-native

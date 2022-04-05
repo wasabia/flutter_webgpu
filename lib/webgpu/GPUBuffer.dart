@@ -18,16 +18,16 @@ class GPUBuffer {
 
   mapAsync({required int mode, int offset = 0, required int size}) {
     var readBufferMapCallback = Pointer.fromFunction<ReadBufferMap>(readBufferMap);
-    Wgpu.instance.webGPU.wgpuBufferMapAsync(buffer, WGPUMapMode.WGPUMapMode_Read, offset, size,
+    Wgpu.binding.wgpuBufferMapAsync(buffer, WGPUMapMode.WGPUMapMode_Read, offset, size,
                       readBufferMapCallback, nullptr);
   }
 
   Pointer<Void> getMappedRange({int offset = 0, int? size}) {
-    return Wgpu.instance.webGPU.wgpuBufferGetMappedRange(buffer, offset, size ?? 0);
+    return Wgpu.binding.wgpuBufferGetMappedRange(buffer, offset, size ?? 0);
   }
 
   unmap() {
-    Wgpu.instance.webGPU.wgpuBufferUnmap(buffer);
+    Wgpu.binding.wgpuBufferUnmap(buffer);
   }
 
 }

@@ -13,7 +13,7 @@ class GPUQueue {
   // commandBuffers can be sequence<GPUCommandBuffer>
   // https://gpuweb.github.io/gpuweb/#dom-gpuqueue-submit
   void submit( GPUCommandBuffer commandBuffers ) {
-    Wgpu.instance.webGPU.wgpuQueueSubmit(queue, 1, commandBuffers.pointer);
+    Wgpu.binding.wgpuQueueSubmit(queue, 1, commandBuffers.pointer);
   }
 
   void writeBuffer(
@@ -39,7 +39,7 @@ class GPUQueue {
     
 
 
-    Wgpu.instance.webGPU.wgpuQueueWriteBuffer(queue, buffer.buffer, bufferOffset, ptr.cast<Void>(), size);
+    Wgpu.binding.wgpuQueueWriteBuffer(queue, buffer.buffer, bufferOffset, ptr.cast<Void>(), size);
   }
 
   void writeTexture(GPUImageCopyTexture destination,
@@ -54,7 +54,7 @@ class GPUQueue {
 
     int dataSize = data.length;
 
-    Wgpu.instance.webGPU.wgpuQueueWriteTexture(queue, destination.pointer, ptr.cast(), dataSize, dataLayout.pointer, size.pointer);
+    Wgpu.binding.wgpuQueueWriteTexture(queue, destination.pointer, ptr.cast(), dataSize, dataLayout.pointer, size.pointer);
   }
 
 }

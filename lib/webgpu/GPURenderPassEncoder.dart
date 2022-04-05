@@ -9,43 +9,43 @@ class GPURenderPassEncoder implements GPUProgrammablePassEncoder {
   }
 
   void setPipeline(GPURenderPipeline pipeline) {
-    Wgpu.instance.webGPU.wgpuRenderPassEncoderSetPipeline(encoder, pipeline.pipeline);
+    Wgpu.binding.wgpuRenderPassEncoderSetPipeline(encoder, pipeline.pipeline);
   }
 
   void setVertexBuffer(int slot, GPUBuffer buffer, [int offset = 0, int? size]) {
-    Wgpu.instance.webGPU.wgpuRenderPassEncoderSetVertexBuffer(encoder, slot, buffer.buffer, offset, size ?? 0);
+    Wgpu.binding.wgpuRenderPassEncoderSetVertexBuffer(encoder, slot, buffer.buffer, offset, size ?? 0);
   }
 
   @override
   void setBindGroup(int v0, GPUBindGroup bindGroup, [int v1 = 0, v2]) {
-    Wgpu.instance.webGPU.wgpuRenderPassEncoderSetBindGroup(encoder, v0, bindGroup.bindGroup, v1, v2 ?? nullptr);
+    Wgpu.binding.wgpuRenderPassEncoderSetBindGroup(encoder, v0, bindGroup.bindGroup, v1, v2 ?? nullptr);
   }
 
   void draw(int vertexCount, [int instanceCount = 1,
     int firstVertex = 0, int firstInstance = 0]) {
-      Wgpu.instance.webGPU.wgpuRenderPassEncoderDraw(encoder, vertexCount, instanceCount, firstVertex, firstInstance);
+      Wgpu.binding.wgpuRenderPassEncoderDraw(encoder, vertexCount, instanceCount, firstVertex, firstInstance);
   }
 
   endPass() {
-    Wgpu.instance.webGPU.wgpuRenderPassEncoderEnd(encoder);
+    Wgpu.binding.wgpuRenderPassEncoderEnd(encoder);
   }
 
   setViewport(double x, double y,
                      double width, double height,
                      double minDepth, double maxDepth) {
-    Wgpu.instance.webGPU.wgpuRenderPassEncoderSetViewport(encoder, x, y, width, height, minDepth, maxDepth);
+    Wgpu.binding.wgpuRenderPassEncoderSetViewport(encoder, x, y, width, height, minDepth, maxDepth);
   }
 
   setScissorRect(int x, int y, int width, int height) {
-    Wgpu.instance.webGPU.wgpuRenderPassEncoderSetScissorRect(encoder, x, y, width, height);
+    Wgpu.binding.wgpuRenderPassEncoderSetScissorRect(encoder, x, y, width, height);
   }
 
   setIndexBuffer(GPUBuffer buffer, int indexFormat, [ int offset = 0, int? size ] ) {
-    Wgpu.instance.webGPU.wgpuRenderPassEncoderSetIndexBuffer(encoder, buffer.buffer, indexFormat, offset, size ?? 0);
+    Wgpu.binding.wgpuRenderPassEncoderSetIndexBuffer(encoder, buffer.buffer, indexFormat, offset, size ?? 0);
   }
 
   drawIndexed(int indexCount, [int instanceCount = 1, int firstIndex = 0, int baseVertex = 0, int firstInstance = 0]) {
-    Wgpu.instance.webGPU.wgpuRenderPassEncoderDrawIndexed(encoder, indexCount, instanceCount, firstIndex, baseVertex, firstInstance);
+    Wgpu.binding.wgpuRenderPassEncoderDrawIndexed(encoder, indexCount, instanceCount, firstIndex, baseVertex, firstInstance);
   }
 
 }

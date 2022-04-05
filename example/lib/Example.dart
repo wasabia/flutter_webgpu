@@ -45,7 +45,7 @@ class Example {
 
   static render(int width, int height) {
 
-    var _webGPU = Wgpu.instance.webGPU;
+    var _webGPU = Wgpu.binding;
 
     Pointer<WGPURequestAdapterOptions> options = ffi.calloc<WGPURequestAdapterOptions>();
     WGPURequestAdapterOptions wrao = options.ref;   
@@ -242,9 +242,7 @@ class Example {
     _webGPU.wgpuBufferMapAsync(outputBuffer, WGPUMapMode.WGPUMapMode_Read, 0, bufferSize,
                       readBufferMapCallback, nullptr);
 
-    var bt = ffi.calloc<bool>();
-
-    _webGPU.wgpuDevicePoll(device.value, bt);
+    _webGPU.wgpuDevicePoll(device.value, true);
 
 
     print(" wgpuBufferGetMappedRange ");

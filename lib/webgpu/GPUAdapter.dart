@@ -25,7 +25,7 @@ class GPUAdapter {
 
     Pointer<WGPUDevice> device = ffi.calloc<WGPUDevice>();
 
-    Wgpu.instance.webGPU.wgpuAdapterRequestDevice(
+    Wgpu.binding.wgpuAdapterRequestDevice(
       adapter.value,
       descriptor.pointer,
       deviceCallback, device.cast<Void>());

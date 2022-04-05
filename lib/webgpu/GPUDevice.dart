@@ -3,7 +3,7 @@ part of webgpu;
 class GPUDevice {
   late Pointer<WGPUDevice> device;
 
-  get webGPU => Wgpu.instance.webGPU;
+  get webGPU => Wgpu.binding;
 
   GPUQueue? _queue;
 

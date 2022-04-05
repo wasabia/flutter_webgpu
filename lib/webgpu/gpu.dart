@@ -17,7 +17,7 @@ GPUAdapter requestAdapter(GPURequestAdapterOptions options) {
   Pointer<WGPUAdapter> adapter = ffi.calloc<WGPUAdapter>();
   var adapterCallback = Pointer.fromFunction<WgpuRequestAdapterCallback>(wgpuRequestAdapterCallback);
 
-  Wgpu.instance.webGPU.wgpuInstanceRequestAdapter(nullptr, options.pointer, adapterCallback, adapter.cast<Void>());
+  Wgpu.binding.wgpuInstanceRequestAdapter(nullptr, options.pointer, adapterCallback, adapter.cast<Void>());
 
   return GPUAdapter(adapter);
 }
