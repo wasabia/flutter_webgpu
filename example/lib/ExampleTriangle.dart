@@ -73,64 +73,47 @@ fn fs_main() -> [[location(0)]] vec4<f32> {
       format: GPUTextureFormat.RGBA8Unorm,
       depthWriteEnabled: false,
       depthCompare: GPUCompareFunction.Never,
-      stencilFront: GPUStencilFaceState(
-        compare: GPUCompareFunction.Always
-      ),
-      stencilBack: GPUStencilFaceState(
-        compare: GPUCompareFunction.Always
-      ),
+      stencilFront: GPUStencilFaceState(compare: GPUCompareFunction.Always),
+      stencilBack: GPUStencilFaceState(compare: GPUCompareFunction.Always),
     );
-
 
     var pipeline = device.createRenderPipeline(GPURenderPipelineDescriptor(
         layout: pipelineLayout,
-        vertex: GPUVertexState(
-            module: shader, entryPoint: "vs_main"),
+        vertex: GPUVertexState(module: shader, entryPoint: "vs_main"),
         primitive: GPUPrimitiveState(),
         multisample: GPUMultisampleState(),
         // depthStencil: _depthStencilState,
         fragment: _fragment));
 
-
     var _textureExtent = GPUExtent3D(width: width, height: height);
     var textureDesc = GPUTextureDescriptor(
-      format: GPUTextureFormat.RGBA8Unorm,
-      size: _textureExtent,
-      usage: GPUTextureUsage.RenderAttachment | GPUTextureUsage.CopySrc
-    );
-
-
+        format: GPUTextureFormat.RGBA8Unorm,
+        size: _textureExtent,
+        usage: GPUTextureUsage.RenderAttachment | GPUTextureUsage.CopySrc);
 
     var texture = device.createTexture(textureDesc);
     GPUTextureView nextTexture = texture.createView(GPUTextureViewDescriptor(
-      format: GPUTextureFormat.Undefined,
-      mipLevelCount: 0,
-      baseMipLevel: 0
-    ));
+        format: GPUTextureFormat.Undefined, mipLevelCount: 0, baseMipLevel: 0));
     var encoder = device.createCommandEncoder(GPUCommandEncoderDescriptor());
 
     var color = GPUColor(r: 1.0, g: 0.5, b: 0.3, a: 0.9);
-    var attach =
-        GPURenderPassColorAttachment(
-          view: nextTexture, 
-          clearColor: color,
-          loadOp: GPULoadOp.Clear,
-          storeOp: GPUStoreOp.Store
-        );
+    var attach = GPURenderPassColorAttachment(
+        view: nextTexture,
+        clearColor: color,
+        loadOp: GPULoadOp.Clear,
+        storeOp: GPUStoreOp.Store);
 
     var renderPass = encoder.beginRenderPass(GPURenderPassDescriptor(
       colorAttachments: attach,
       // depthStencilAttachment: GPURenderPassDepthStencilAttachment(
-      //   view: nextTexture, 
+      //   view: nextTexture,
       // )
     ));
 
- 
-
     renderPass.setPipeline(pipeline);
-       
+
     renderPass.draw(3, 1, 0, 0);
-  
+
     renderPass.end();
 
     var copyTexture =

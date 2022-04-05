@@ -1,8 +1,6 @@
 part of webgpu;
 
-
 class GPUCommandBuffer extends GPUObjectBase {
-  
   late Pointer<WGPUCommandBuffer> pointer;
   late WGPUCommandBuffer buffer;
 
@@ -10,13 +8,9 @@ class GPUCommandBuffer extends GPUObjectBase {
     pointer = ffi.calloc<WGPUCommandBuffer>();
     pointer.value = buffer;
   }
-
-
 }
 
-
 class GPUCommandBufferDescriptor extends GPUObjectDescriptorBase {
-
   late Pointer<WGPUCommandBufferDescriptor> pointer;
 
   GPUCommandBufferDescriptor() {
@@ -24,7 +18,4 @@ class GPUCommandBufferDescriptor extends GPUObjectDescriptorBase {
     WGPUCommandBufferDescriptor descriptor = pointer.ref;
     descriptor.label = nullptr;
   }
-
 }
-
-

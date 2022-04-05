@@ -13,10 +13,10 @@ class Wgpu {
   static WebGPUBinding get binding => instance.webGPU;
 
   Wgpu() {
-    final DynamicLibrary dynamicLibrary = Platform.isAndroid ? DynamicLibrary.open("libwgpu_native.so") : DynamicLibrary.process();
+    final DynamicLibrary dynamicLibrary = Platform.isAndroid
+        ? DynamicLibrary.open("libwgpu_native.so")
+        : DynamicLibrary.process();
 
     _webGPU = WebGPUBinding(dynamicLibrary);
   }
-
-
 }

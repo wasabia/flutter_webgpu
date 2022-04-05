@@ -3,26 +3,22 @@ part of webgpu;
 class GPUSampler extends GPUObjectBase {
   late WGPUSampler sampler;
 
-  GPUSampler(this.sampler) {
-
-  }
-
+  GPUSampler(this.sampler) {}
 }
 
 class GPUSamplerDescriptor extends GPUObjectDescriptorBase {
   late Pointer<WGPUSamplerDescriptor> pointer;
 
-  GPUSamplerDescriptor({
-    int addressModeU = GPUAddressMode.ClampToEdge,
-    int addressModeV = GPUAddressMode.ClampToEdge,
-    int addressModeW = GPUAddressMode.ClampToEdge,
-    double lodMinClamp = 0.0,
-    double lodMaxClamp = 32.0,
-    int magFilter = GPUFilterMode.Nearest,
-    int minFilter = GPUFilterMode.Nearest,
-    int mipmapFilter = GPUFilterMode.Nearest,
-    int maxAnisotropy = 1
-  }) {
+  GPUSamplerDescriptor(
+      {int addressModeU = GPUAddressMode.ClampToEdge,
+      int addressModeV = GPUAddressMode.ClampToEdge,
+      int addressModeW = GPUAddressMode.ClampToEdge,
+      double lodMinClamp = 0.0,
+      double lodMaxClamp = 32.0,
+      int magFilter = GPUFilterMode.Nearest,
+      int minFilter = GPUFilterMode.Nearest,
+      int mipmapFilter = GPUFilterMode.Nearest,
+      int maxAnisotropy = 1}) {
     pointer = ffi.calloc<WGPUSamplerDescriptor>();
     var ref = pointer.ref;
     ref.nextInChain = nullptr;
@@ -37,6 +33,4 @@ class GPUSamplerDescriptor extends GPUObjectDescriptorBase {
     ref.mipmapFilter = mipmapFilter;
     ref.maxAnisotropy = maxAnisotropy;
   }
-
-
 }

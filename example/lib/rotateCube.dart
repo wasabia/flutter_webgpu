@@ -8,9 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webgpu/flutter_webgpu.dart';
 
 class RotateCube {
-
   static render(int width, int height) {
-  
     int bytes_per_pixel = Uint32List.bytesPerElement;
     int unpadded_bytes_per_row = width * bytes_per_pixel;
     int align = 256;
@@ -27,53 +25,53 @@ class RotateCube {
     device.setUncapturedErrorCallback();
 
     print("device.value: ${device.device.value} device: ${device.device} ");
-    print("adapter.value: ${adapter.adapter.value} adapter: ${adapter.adapter} ");
-
+    print(
+        "adapter.value: ${adapter.adapter.value} adapter: ${adapter.adapter} ");
 
     // prettier-ignore
     var cubeVertexArray = Float32List.fromList([
       // float4 position, float4 color, float2 uv,
-      1, -1, 1, 1,   1, 0, 1, 1,  1, 1,
-      -1, -1, 1, 1,  0, 0, 1, 1,  0, 1,
-      -1, -1, -1, 1, 0, 0, 0, 1,  0, 0,
-      1, -1, -1, 1,  1, 0, 0, 1,  1, 0,
-      1, -1, 1, 1,   1, 0, 1, 1,  1, 1,
-      -1, -1, -1, 1, 0, 0, 0, 1,  0, 0,
+      1, -1, 1, 1, 1, 0, 1, 1, 1, 1,
+      -1, -1, 1, 1, 0, 0, 1, 1, 0, 1,
+      -1, -1, -1, 1, 0, 0, 0, 1, 0, 0,
+      1, -1, -1, 1, 1, 0, 0, 1, 1, 0,
+      1, -1, 1, 1, 1, 0, 1, 1, 1, 1,
+      -1, -1, -1, 1, 0, 0, 0, 1, 0, 0,
 
-      1, 1, 1, 1,    1, 1, 1, 1,  1, 1,
-      1, -1, 1, 1,   1, 0, 1, 1,  0, 1,
-      1, -1, -1, 1,  1, 0, 0, 1,  0, 0,
-      1, 1, -1, 1,   1, 1, 0, 1,  1, 0,
-      1, 1, 1, 1,    1, 1, 1, 1,  1, 1,
-      1, -1, -1, 1,  1, 0, 0, 1,  0, 0,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, -1, 1, 1, 1, 0, 1, 1, 0, 1,
+      1, -1, -1, 1, 1, 0, 0, 1, 0, 0,
+      1, 1, -1, 1, 1, 1, 0, 1, 1, 0,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, -1, -1, 1, 1, 0, 0, 1, 0, 0,
 
-      -1, 1, 1, 1,   0, 1, 1, 1,  1, 1,
-      1, 1, 1, 1,    1, 1, 1, 1,  0, 1,
-      1, 1, -1, 1,   1, 1, 0, 1,  0, 0,
-      -1, 1, -1, 1,  0, 1, 0, 1,  1, 0,
-      -1, 1, 1, 1,   0, 1, 1, 1,  1, 1,
-      1, 1, -1, 1,   1, 1, 0, 1,  0, 0,
+      -1, 1, 1, 1, 0, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
+      1, 1, -1, 1, 1, 1, 0, 1, 0, 0,
+      -1, 1, -1, 1, 0, 1, 0, 1, 1, 0,
+      -1, 1, 1, 1, 0, 1, 1, 1, 1, 1,
+      1, 1, -1, 1, 1, 1, 0, 1, 0, 0,
 
-      -1, -1, 1, 1,  0, 0, 1, 1,  1, 1,
-      -1, 1, 1, 1,   0, 1, 1, 1,  0, 1,
-      -1, 1, -1, 1,  0, 1, 0, 1,  0, 0,
-      -1, -1, -1, 1, 0, 0, 0, 1,  1, 0,
-      -1, -1, 1, 1,  0, 0, 1, 1,  1, 1,
-      -1, 1, -1, 1,  0, 1, 0, 1,  0, 0,
+      -1, -1, 1, 1, 0, 0, 1, 1, 1, 1,
+      -1, 1, 1, 1, 0, 1, 1, 1, 0, 1,
+      -1, 1, -1, 1, 0, 1, 0, 1, 0, 0,
+      -1, -1, -1, 1, 0, 0, 0, 1, 1, 0,
+      -1, -1, 1, 1, 0, 0, 1, 1, 1, 1,
+      -1, 1, -1, 1, 0, 1, 0, 1, 0, 0,
 
-      1, 1, 1, 1,    1, 1, 1, 1,  1, 1,
-      -1, 1, 1, 1,   0, 1, 1, 1,  0, 1,
-      -1, -1, 1, 1,  0, 0, 1, 1,  0, 0,
-      -1, -1, 1, 1,  0, 0, 1, 1,  0, 0,
-      1, -1, 1, 1,   1, 0, 1, 1,  1, 0,
-      1, 1, 1, 1,    1, 1, 1, 1,  1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      -1, 1, 1, 1, 0, 1, 1, 1, 0, 1,
+      -1, -1, 1, 1, 0, 0, 1, 1, 0, 0,
+      -1, -1, 1, 1, 0, 0, 1, 1, 0, 0,
+      1, -1, 1, 1, 1, 0, 1, 1, 1, 0,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 
-      1, -1, -1, 1,  1, 0, 0, 1,  1, 1,
-      -1, -1, -1, 1, 0, 0, 0, 1,  0, 1,
-      -1, 1, -1, 1,  0, 1, 0, 1,  0, 0,
-      1, 1, -1, 1,   1, 1, 0, 1,  1, 0,
-      1, -1, -1, 1,  1, 0, 0, 1,  1, 1,
-      -1, 1, -1, 1,  0, 1, 0, 1,  0, 0,
+      1, -1, -1, 1, 1, 0, 0, 1, 1, 1,
+      -1, -1, -1, 1, 0, 0, 0, 1, 0, 1,
+      -1, 1, -1, 1, 0, 1, 0, 1, 0, 0,
+      1, 1, -1, 1, 1, 1, 0, 1, 1, 0,
+      1, -1, -1, 1, 1, 0, 0, 1, 1, 1,
+      -1, 1, -1, 1, 0, 1, 0, 1, 0, 0,
     ]);
 
     // Create a vertex buffer from the cube data.
@@ -82,9 +80,11 @@ class RotateCube {
       usage: GPUBufferUsage.Vertex,
       mappedAtCreation: true,
     ));
-    
-    var pointer = verticesBuffer.getMappedRange(size: cubeVertexArray.lengthInBytes);
-    Float32List _list = (pointer.cast<Float>()).asTypedList(cubeVertexArray.length);
+
+    var pointer =
+        verticesBuffer.getMappedRange(size: cubeVertexArray.lengthInBytes);
+    Float32List _list =
+        (pointer.cast<Float>()).asTypedList(cubeVertexArray.length);
     _list.setAll(0, cubeVertexArray);
     verticesBuffer.unmap();
 
@@ -117,7 +117,7 @@ fn fs_main([[location(0)]] fragUV: vec2<f32>,
 }
 """;
 
-  String vert1 = """
+    String vert1 = """
 [[stage(vertex)]]
 fn main([[builtin(vertex_index)]] VertexIndex : u32)
      -> [[builtin(position)]] vec4<f32> {
@@ -130,53 +130,47 @@ fn main([[builtin(vertex_index)]] VertexIndex : u32)
 }
 """;
 
-  String frag1 = """
+    String frag1 = """
 [[stage(fragment)]]
 fn main() -> [[location(0)]] vec4<f32> {
   return vec4<f32>(1.0, 0.0, 0.0, 1.0);
 }
 """;
 
-      
     int cubeVertexSize = 4 * 10; // Byte size of one cube vertex.
     int cubePositionOffset = 0;
     int cubeColorOffset = 4 * 4; // Byte offset of cube vertex color attribute.
     int cubeUVOffset = 4 * 8;
     int cubeVertexCount = 36;
 
-    var uniformGroupLayout = device.createBindGroupLayout( GPUBindGroupLayoutDescriptor(
-        entries: [
-          GPUBindGroupLayoutEntry(
-            binding: 0,
-            visibility: GPUShaderStage.Vertex,
-            buffer: GPUBufferBindingLayout(type: GPUBufferBindingType.Uniform)
-          )
-        ],
-        entryCount: 1
-     ) );
+    var uniformGroupLayout =
+        device.createBindGroupLayout(GPUBindGroupLayoutDescriptor(entries: [
+      GPUBindGroupLayoutEntry(
+          binding: 0,
+          visibility: GPUShaderStage.Vertex,
+          buffer: GPUBufferBindingLayout(type: GPUBufferBindingType.Uniform))
+    ], entryCount: 1));
 
-    var layout = device.createPipelineLayout(
-          GPUPipelineLayoutDescriptor(
-            bindGroupLayouts: uniformGroupLayout, bindGroupLayoutCount: 1));
+    var layout = device.createPipelineLayout(GPUPipelineLayoutDescriptor(
+        bindGroupLayouts: uniformGroupLayout, bindGroupLayoutCount: 1));
 
     var vertModule = device.createShaderModule(GPUShaderModuleDescriptor(
       code: vert0,
     ));
 
-    var vertex3 = GPUVertexState(
-      module: vertModule,
-      entryPoint: 'vs_main',
-      buffers: [
-        GPUVertexBufferLayout(
-          arrayStride: cubeVertexSize,
-          attributes: [
-            GPUVertexAttribute(format: GPUVertexFormat.Float32x4, offset: cubePositionOffset, shaderLocation: 0),
-            GPUVertexAttribute(format: GPUVertexFormat.Float32x2, offset: cubeUVOffset, shaderLocation: 1)
-          ]
-        )
-      ]
-    );
-
+    var vertex3 =
+        GPUVertexState(module: vertModule, entryPoint: 'vs_main', buffers: [
+      GPUVertexBufferLayout(arrayStride: cubeVertexSize, attributes: [
+        GPUVertexAttribute(
+            format: GPUVertexFormat.Float32x4,
+            offset: cubePositionOffset,
+            shaderLocation: 0),
+        GPUVertexAttribute(
+            format: GPUVertexFormat.Float32x2,
+            offset: cubeUVOffset,
+            shaderLocation: 1)
+      ])
+    ]);
 
     var desc = GPURenderPipelineDescriptor(
       layout: layout,
@@ -189,9 +183,7 @@ fn main() -> [[location(0)]] vec4<f32> {
         ),
       ),
       primitive: GPUPrimitiveState(
-        cullMode: GPUCullMode.Back,
-        frontFace: GPUFrontFace.CCW
-      ),
+          cullMode: GPUCullMode.Back, frontFace: GPUFrontFace.CCW),
       multisample: GPUMultisampleState(),
       // depthStencil: GPUDepthStencilState(
       //   depthWriteEnabled: true,
@@ -207,27 +199,22 @@ fn main() -> [[location(0)]] vec4<f32> {
       // )
     );
 
-
-    var pipeline = device.createRenderPipeline( desc );
+    var pipeline = device.createRenderPipeline(desc);
 
     var _layout = pipeline.getBindGroupLayout(0);
-    
 
     var presentationSize = GPUExtent3D(width: width, height: height);
 
     var depthTexture = device.createTexture(GPUTextureDescriptor(
-      size: presentationSize,
-      format: GPUTextureFormat.Depth32Float,
-      usage: GPUTextureUsage.RenderAttachment
-    ));
+        size: presentationSize,
+        format: GPUTextureFormat.Depth32Float,
+        usage: GPUTextureUsage.RenderAttachment));
 
     var uniformBufferSize = 4 * 16; // 4x4 matrix
     var uniformBuffer = device.createBuffer(GPUBufferDescriptor(
       size: uniformBufferSize,
       usage: GPUBufferUsage.Uniform | GPUBufferUsage.CopyDst,
     ));
-
-
 
     var uniformBindGroup = device.createBindGroup(GPUBindGroupDescriptor(
       layout: _layout,
@@ -239,12 +226,8 @@ fn main() -> [[location(0)]] vec4<f32> {
       ],
     ));
 
-    Float32List transformationMatrix = Float32List.fromList([
-      1.0, 0.0, 0.0, 0.0,
-      0.0, 1.0, 0.0, 0.0,
-      0, 0, 1, 0,
-      0, 0, 0, 1
-    ]);
+    Float32List transformationMatrix = Float32List.fromList(
+        [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0, 0, 1, 0, 0, 0, 0, 1]);
 
     Matrix4 _mat = Matrix4.rotationX(0.36);
     _mat.rotateY(0.2);
@@ -252,51 +235,40 @@ fn main() -> [[location(0)]] vec4<f32> {
 
     transformationMatrix = Float32List.fromList(_mat.storage);
 
-
     // var mp = calloc<Float>(transformationMatrix.length);
     // Float32List _list2 = (mp as Pointer<Float>).asTypedList(transformationMatrix.length);
     // _list2.setAll(0, transformationMatrix);
 
-    device.queue.writeBuffer(
-      uniformBuffer,
-      0,
-      transformationMatrix,
-      transformationMatrix.lengthInBytes
-    );
-   
+    device.queue.writeBuffer(uniformBuffer, 0, transformationMatrix,
+        transformationMatrix.lengthInBytes);
 
     var commandEncoder = device.createCommandEncoder();
 
-
     var _textureExtent = GPUExtent3D(width: width, height: height);
     var textureDesc = GPUTextureDescriptor(
-      format: GPUTextureFormat.RGBA8Unorm,
-      size: _textureExtent,
-      usage: GPUTextureUsage.RenderAttachment | GPUTextureUsage.CopySrc
-    );
+        format: GPUTextureFormat.RGBA8Unorm,
+        size: _textureExtent,
+        usage: GPUTextureUsage.RenderAttachment | GPUTextureUsage.CopySrc);
 
     var texture = device.createTexture(textureDesc);
     GPUTextureView textureView = texture.createView(GPUTextureViewDescriptor());
-   
 
     var texture0 = device.createTexture(GPUTextureDescriptor(
-      format: GPUTextureFormat.RGBA8Unorm,
-      size: _textureExtent,
-      usage: GPUTextureUsage.RenderAttachment | GPUTextureUsage.CopySrc,
-      sampleCount: 1
-    ));
-    GPUTextureView textureView0 = texture0.createView(GPUTextureViewDescriptor());
-
+        format: GPUTextureFormat.RGBA8Unorm,
+        size: _textureExtent,
+        usage: GPUTextureUsage.RenderAttachment | GPUTextureUsage.CopySrc,
+        sampleCount: 1));
+    GPUTextureView textureView0 =
+        texture0.createView(GPUTextureViewDescriptor());
 
     var renderPassDescriptor = GPURenderPassDescriptor(
       colorAttachments: GPURenderPassColorAttachment(
-        // view: textureView0,
-        // resolveTarget: textureView,
-        view: textureView,
-        clearColor: GPUColor( r: 0.5, g: 0.5, b: 0.0, a: 0.5 ),
-        storeOp: GPUStoreOp.Store,
-        loadOp: GPULoadOp.Clear
-      ),
+          // view: textureView0,
+          // resolveTarget: textureView,
+          view: textureView,
+          clearColor: GPUColor(r: 0.5, g: 0.5, b: 0.0, a: 0.5),
+          storeOp: GPUStoreOp.Store,
+          loadOp: GPULoadOp.Clear),
       // depthStencilAttachment: GPURenderPassDepthStencilAttachment(
       //   view: depthTexture.createView(GPUTextureViewDescriptor()),
       //   depthLoadOp: GPULoadOp.Clear,
@@ -315,7 +287,6 @@ fn main() -> [[location(0)]] vec4<f32> {
     passEncoder.draw(cubeVertexCount, 1, 0, 0);
     passEncoder.end();
 
-
     var copyTexture =
         GPUImageCopyTexture(texture: texture, origin: GPUOrigin3D());
 
@@ -327,7 +298,6 @@ fn main() -> [[location(0)]] vec4<f32> {
         buffer: outputBuffer, bytesPerRow: padded_bytes_per_row);
 
     commandEncoder.copyTextureToBuffer(copyTexture, copyBuffer, _textureExtent);
-
 
     var commandBuffer = commandEncoder.finish(GPUCommandBufferDescriptor());
     device.queue.submit(commandBuffer);

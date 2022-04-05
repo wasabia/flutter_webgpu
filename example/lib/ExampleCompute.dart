@@ -5,27 +5,20 @@ import 'dart:typed_data';
 import 'package:ffi/ffi.dart' as ffi;
 import 'package:flutter_webgpu/flutter_webgpu.dart';
 
-
-
 class ExampleCompute {
-
-
   static render(int width, int height) {
-    Uint32List numbers = Uint32List.fromList(
-      [
-        1, 2, 3, 4
-      ]);
+    Uint32List numbers = Uint32List.fromList([1, 2, 3, 4]);
     int numbersSize = numbers.length * Uint32List.bytesPerElement;
     int numbersLength = numbersSize ~/ Uint32List.bytesPerElement;
-    
-    var adapter = requestAdapter( GPURequestAdapterOptions() );
-    var device = adapter.requestDevice( GPUDeviceDescriptor() );
 
+    var adapter = requestAdapter(GPURequestAdapterOptions());
+    var device = adapter.requestDevice(GPUDeviceDescriptor());
 
     device.setUncapturedErrorCallback();
 
     print("device.value: ${device.device.value} device: ${device.device} ");
-    print("adapter.value: ${adapter.adapter.value} adapter: ${adapter.adapter} ");
+    print(
+        "adapter.value: ${adapter.adapter.value} adapter: ${adapter.adapter} ");
 
     String shaderStr = """
 struct PrimeIndices {
@@ -70,71 +63,67 @@ fn main([[builtin(global_invocation_id)]] global_id: vec3<u32>) {
 }
     """;
 
-    GPUShaderModuleDescriptor shaderSource = GPUShaderModuleDescriptor(code: shaderStr);
+    GPUShaderModuleDescriptor shaderSource =
+        GPUShaderModuleDescriptor(code: shaderStr);
     var shader = device.createShaderModule(shaderSource);
 
-    var bufferDesc0 = GPUBufferDescriptor(size: numbersSize, usage: GPUBufferUsage.MapRead | GPUBufferUsage.CopyDst);
+    var bufferDesc0 = GPUBufferDescriptor(
+        size: numbersSize,
+        usage: GPUBufferUsage.MapRead | GPUBufferUsage.CopyDst);
     var stagingBuffer = device.createBuffer(bufferDesc0);
 
     print("numbersSize: ${numbersSize} ");
 
-    var bufferDesc1 = GPUBufferDescriptor(size: numbersSize, usage: GPUBufferUsage.Storage | GPUBufferUsage.CopyDst |
-                           GPUBufferUsage.CopySrc | GPUBufferUsage.MapRead | GPUBufferBindingType.Uniform);
+    var bufferDesc1 = GPUBufferDescriptor(
+        size: numbersSize,
+        usage: GPUBufferUsage.Storage |
+            GPUBufferUsage.CopyDst |
+            GPUBufferUsage.CopySrc |
+            GPUBufferUsage.MapRead |
+            GPUBufferBindingType.Uniform);
     var storageBuffer = device.createBuffer(bufferDesc1);
 
-    var _bindGroupLayoutDesc = GPUBindGroupLayoutDescriptor(
-      entries: [GPUBindGroupLayoutEntry(
-        binding: 0,
-        visibility: GPUShaderStage.Compute,
-        buffer: GPUBufferBindingLayout( type: GPUBufferBindingType.Storage )
-      )],
-      entryCount: 1
-    );
-    
-    var bindGroupLayout = device.createBindGroupLayout( _bindGroupLayoutDesc );
-    var pipelineLayout = device.createPipelineLayout(GPUPipelineLayoutDescriptor(
-      bindGroupLayouts: bindGroupLayout,
-      bindGroupLayoutCount: 1
-    ));
+    var _bindGroupLayoutDesc = GPUBindGroupLayoutDescriptor(entries: [
+      GPUBindGroupLayoutEntry(
+          binding: 0,
+          visibility: GPUShaderStage.Compute,
+          buffer: GPUBufferBindingLayout(type: GPUBufferBindingType.Storage))
+    ], entryCount: 1);
 
-    var computePipeline = device.createComputePipeline(GPUComputePipelineDescriptor(
-      layout: pipelineLayout,
-      compute: GPUProgrammableStage(module: shader, entryPoint: 'main')
-    ));
+    var bindGroupLayout = device.createBindGroupLayout(_bindGroupLayoutDesc);
+    var pipelineLayout = device.createPipelineLayout(
+        GPUPipelineLayoutDescriptor(
+            bindGroupLayouts: bindGroupLayout, bindGroupLayoutCount: 1));
 
-    var encoder = device.createCommandEncoder( GPUCommandEncoderDescriptor() );
+    var computePipeline = device.createComputePipeline(
+        GPUComputePipelineDescriptor(
+            layout: pipelineLayout,
+            compute: GPUProgrammableStage(module: shader, entryPoint: 'main')));
 
-    var computePass = encoder.beginComputePass( GPUComputePassDescriptor() );
+    var encoder = device.createCommandEncoder(GPUCommandEncoderDescriptor());
 
-    
+    var computePass = encoder.beginComputePass(GPUComputePassDescriptor());
+
     computePass.setPipeline(computePipeline);
 
-
     var bindGroup = device.createBindGroup(GPUBindGroupDescriptor(
-      label: "Bind Group",
-      layout: bindGroupLayout,
-      entries: [GPUBindGroupEntry(
-        binding: 0,
-        buffer: storageBuffer)],
-      entryCount: 1
-    ));
- 
+        label: "Bind Group",
+        layout: bindGroupLayout,
+        entries: [GPUBindGroupEntry(binding: 0, buffer: storageBuffer)],
+        entryCount: 1));
+
     computePass.setBindGroup(0, bindGroup, 0, null);
     computePass.dispatch(numbersLength, 1, 1);
     computePass.end();
 
-    
-
     encoder.copyBufferToBuffer(storageBuffer, 0, stagingBuffer, 0, numbersSize);
-                                       
-    
+
     var queue = device.queue;
-    
-    var commandBuffer = encoder.finish( GPUCommandBufferDescriptor() );
+
+    var commandBuffer = encoder.finish(GPUCommandBufferDescriptor());
 
     queue.writeBuffer(storageBuffer, 0, numbers, numbersSize);
     queue.submit(commandBuffer);
-
 
     stagingBuffer.mapAsync(mode: WGPUMapMode_Read, size: numbersSize);
 
@@ -147,13 +136,10 @@ fn main([[builtin(global_invocation_id)]] global_id: vec3<u32>) {
     Pointer<Uint32> pixles = data.cast<Uint32>();
 
     print(" compute result: ");
-    print( pixles.asTypedList(numbers.length) );
+    print(pixles.asTypedList(numbers.length));
 
     stagingBuffer.unmap();
 
     return null;
-
-
   }
-
 }

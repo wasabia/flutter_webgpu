@@ -1,26 +1,26 @@
 part of webgpu;
 
-
-class GPUComputePassEncoder extends GPUObjectBase implements GPUProgrammablePassEncoder {
-
+class GPUComputePassEncoder extends GPUObjectBase
+    implements GPUProgrammablePassEncoder {
   late WGPUComputePassEncoder computePass;
-  
-  GPUComputePassEncoder(this.computePass) {
 
-  }
-
+  GPUComputePassEncoder(this.computePass) {}
 
   void setPipeline(GPUComputePipeline pipeline) {
-    Wgpu.binding.wgpuComputePassEncoderSetPipeline(computePass, pipeline.computePipeline);
+    Wgpu.binding.wgpuComputePassEncoderSetPipeline(
+        computePass, pipeline.computePipeline);
   }
 
   @override
   void setBindGroup(int v0, GPUBindGroup bindGroup, [int v1 = 0, v2]) {
-    Wgpu.binding.wgpuComputePassEncoderSetBindGroup(computePass, v0, bindGroup.bindGroup, v1, v2 ?? nullptr);
+    Wgpu.binding.wgpuComputePassEncoderSetBindGroup(
+        computePass, v0, bindGroup.bindGroup, v1, v2 ?? nullptr);
   }
 
-  void dispatch(int workgroupCountX, [int workgroupCountY = 1, int workgroupCountZ = 1]) {
-    Wgpu.binding.wgpuComputePassEncoderDispatch(computePass, workgroupCountX, workgroupCountY, workgroupCountZ);
+  void dispatch(int workgroupCountX,
+      [int workgroupCountY = 1, int workgroupCountZ = 1]) {
+    Wgpu.binding.wgpuComputePassEncoderDispatch(
+        computePass, workgroupCountX, workgroupCountY, workgroupCountZ);
   }
 
   void end() {
@@ -30,12 +30,9 @@ class GPUComputePassEncoder extends GPUObjectBase implements GPUProgrammablePass
   void endPass() {
     end();
   }
-
 }
 
-
 class GPUComputePassDescriptor extends GPUObjectDescriptorBase {
-
   late Pointer<WGPUComputePassDescriptor> pointer;
 
   GPUComputePassDescriptor() {
@@ -43,7 +40,5 @@ class GPUComputePassDescriptor extends GPUObjectDescriptorBase {
     var ref = pointer.ref;
 
     ref.label = "Compute Pass".toNativeUtf8().cast();
-    
   }
-
 }

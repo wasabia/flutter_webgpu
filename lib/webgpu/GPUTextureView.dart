@@ -1,30 +1,22 @@
 part of webgpu;
 
-
 class GPUTextureView extends GPUObjectBase {
-
   late WGPUTextureView textureView;
 
-  GPUTextureView(this.textureView) {
-
-  }
-
+  GPUTextureView(this.textureView) {}
 }
 
-
 class GPUTextureViewDescriptor extends GPUObjectDescriptorBase {
-
   late Pointer<WGPUTextureViewDescriptor> pointer;
 
-  GPUTextureViewDescriptor({
-    int? format,
-    int baseMipLevel = 0,
-    int mipLevelCount = 0,
-    int? arrayLayerCount,
-    int? aspect,
-    int? baseArrayLayer,
-    int? dimension
-  }) {
+  GPUTextureViewDescriptor(
+      {int? format,
+      int baseMipLevel = 0,
+      int mipLevelCount = 0,
+      int? arrayLayerCount,
+      int? aspect,
+      int? baseArrayLayer,
+      int? dimension}) {
     pointer = ffi.calloc<WGPUTextureViewDescriptor>();
     WGPUTextureViewDescriptor _descriptor = pointer.ref;
     _descriptor.nextInChain = nullptr;
@@ -37,6 +29,4 @@ class GPUTextureViewDescriptor extends GPUObjectDescriptorBase {
     _descriptor.baseMipLevel = baseMipLevel;
     _descriptor.mipLevelCount = mipLevelCount;
   }
-
-
 }

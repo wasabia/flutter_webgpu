@@ -1,5 +1,4 @@
 class ShaderHelper {
-
   static loadWgsl(String shader) {
     // WGPUShaderModuleWGSLDescriptor *wgslDescriptor =
     //     malloc(sizeof(WGPUShaderModuleWGSLDescriptor));
@@ -11,5 +10,4 @@ class ShaderHelper {
     //     .label = name,
     // };
   }
-
 }

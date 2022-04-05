@@ -1,22 +1,15 @@
 part of webgpu;
 
 class GPUShaderModule extends GPUObjectBase {
-
   late WGPUShaderModule shader;
 
-  GPUShaderModule(this.shader) {
-
-  }
-
+  GPUShaderModule(this.shader) {}
 }
-
 
 class GPUShaderModuleDescriptor extends GPUObjectDescriptorBase {
   late Pointer<WGPUShaderModuleDescriptor> pointer;
 
-  GPUShaderModuleDescriptor({
-    required String code
-  }) {
+  GPUShaderModuleDescriptor({required String code}) {
     var wgslPointer = ffi.calloc<WGPUShaderModuleWGSLDescriptor>();
     var wgslRef = wgslPointer.ref;
     wgslRef.chain.next = nullptr;
@@ -28,7 +21,4 @@ class GPUShaderModuleDescriptor extends GPUObjectDescriptorBase {
     ref.nextInChain = wgslPointer.cast();
     ref.label = "shaderModule".toNativeUtf8().cast();
   }
-
-
-
 }

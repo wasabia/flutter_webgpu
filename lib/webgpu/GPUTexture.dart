@@ -1,16 +1,13 @@
 part of webgpu;
 
 class GPUTexture extends GPUObjectBase {
-
   late WGPUTexture texture;
 
-  GPUTexture(this.texture) {
-
-  }
+  GPUTexture(this.texture) {}
 
   GPUTextureView createView([GPUTextureViewDescriptor? descriptor]) {
-
-    WGPUTextureView textureView = Wgpu.binding.wgpuTextureCreateView(texture, (descriptor ?? GPUTextureViewDescriptor()).pointer);
+    WGPUTextureView textureView = Wgpu.binding.wgpuTextureCreateView(
+        texture, (descriptor ?? GPUTextureViewDescriptor()).pointer);
 
     return GPUTextureView(textureView);
   }
@@ -18,22 +15,18 @@ class GPUTexture extends GPUObjectBase {
   destroy() {
     Wgpu.binding.wgpuTextureDestroy(texture);
   }
-
 }
 
-
 class GPUTextureDescriptor extends GPUObjectDescriptorBase {
-
   late Pointer<WGPUTextureDescriptor> pointer;
 
-  GPUTextureDescriptor({
-    required GPUExtent3D size,
-    int mipLevelCount = 1,
-    int sampleCount = 1,
-    int? dimension,
-    required int format,
-    required int usage
-  }) {
+  GPUTextureDescriptor(
+      {required GPUExtent3D size,
+      int mipLevelCount = 1,
+      int sampleCount = 1,
+      int? dimension,
+      required int format,
+      required int usage}) {
     pointer = ffi.calloc<WGPUTextureDescriptor>();
     WGPUTextureDescriptor _descriptor = pointer.ref;
     _descriptor.nextInChain = nullptr;
@@ -45,5 +38,4 @@ class GPUTextureDescriptor extends GPUObjectDescriptorBase {
     _descriptor.format = format;
     _descriptor.usage = usage;
   }
-
 }

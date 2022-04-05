@@ -1,7 +1,6 @@
 part of webgpu;
 
 class GPURenderPassDescriptor extends GPUObjectDescriptorBase {
-
   late Pointer<WGPURenderPassDescriptor> pointer;
 
   GPURenderPassDescriptor({
@@ -14,13 +13,15 @@ class GPURenderPassDescriptor extends GPUObjectDescriptorBase {
     WGPURenderPassDescriptor descriptor = pointer.ref;
     descriptor.colorAttachments = colorAttachments?.pointer ?? nullptr;
     descriptor.colorAttachmentCount = 1;
-    descriptor.depthStencilAttachment = depthStencilAttachment?.pointer ?? nullptr;
+    descriptor.depthStencilAttachment =
+        depthStencilAttachment?.pointer ?? nullptr;
   }
 
-  get colorAttachments => GPURenderPassColorAttachment.pointer(pointer.ref.colorAttachments);
+  get colorAttachments =>
+      GPURenderPassColorAttachment.pointer(pointer.ref.colorAttachments);
   get depthStencilAttachment {
     print("depthStencilAttachment TODO ");
-    return GPURenderPassDepthStencilAttachment.pointer(pointer.ref.depthStencilAttachment);
+    return GPURenderPassDepthStencilAttachment.pointer(
+        pointer.ref.depthStencilAttachment);
   }
- 
 }

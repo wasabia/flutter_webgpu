@@ -1,5 +1,3 @@
-
-
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -19,7 +17,6 @@ import 'boids.dart';
 import 'helloTriangle.dart';
 import 'helloTriangleMSAA.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
@@ -30,9 +27,6 @@ class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
 }
-
-
-
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
@@ -47,7 +41,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initPlatformState();
-  
+
     init();
   }
 
@@ -59,23 +53,20 @@ class _MyAppState extends State<MyApp> {
     pixels = HelloTriangle.render(width, height);
     // pixels = HelloTriangleMSAA.render(width, height);
     // pixels = RotateCube.render(width, height);
-    
 
     // crash TODO
     // pixels = TextureCube.render(width, height);
     // pixels = Boids.render(width, height);
 
-    if(pixels != null) {
-      ui.decodeImageFromPixels(pixels!, width, height, ui.PixelFormat.rgba8888, (image) {
+    if (pixels != null) {
+      ui.decodeImageFromPixels(pixels!, width, height, ui.PixelFormat.rgba8888,
+          (image) {
         setState(() {
           img = image;
         });
       });
     }
-    
   }
-
-
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {

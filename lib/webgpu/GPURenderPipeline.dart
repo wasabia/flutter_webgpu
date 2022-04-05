@@ -1,35 +1,28 @@
 part of webgpu;
 
-
 class GPURenderPipeline extends GPUObjectBase implements GPUPipelineBase {
   late WGPURenderPipeline pipeline;
 
-  GPURenderPipeline(this.pipeline) {
-
-  }
+  GPURenderPipeline(this.pipeline) {}
 
   @override
   GPUBindGroupLayout getBindGroupLayout(int index) {
-    WGPUBindGroupLayout layout = Wgpu.binding.wgpuRenderPipelineGetBindGroupLayout(pipeline, index);
+    WGPUBindGroupLayout layout =
+        Wgpu.binding.wgpuRenderPipelineGetBindGroupLayout(pipeline, index);
     return GPUBindGroupLayout(layout);
   }
-
 }
 
-
 class GPURenderPipelineDescriptor extends GPUPipelineDescriptorBase {
-
   late Pointer<WGPURenderPipelineDescriptor> pointer;
 
-  GPURenderPipelineDescriptor({
-    GPUPipelineLayout? layout,
-    required GPUVertexState vertex,
-    required GPUPrimitiveState primitive,
-    required GPUMultisampleState multisample,
-    required GPUFragmentState fragment,
-    GPUDepthStencilState? depthStencil
-
-  }) {
+  GPURenderPipelineDescriptor(
+      {GPUPipelineLayout? layout,
+      required GPUVertexState vertex,
+      required GPUPrimitiveState primitive,
+      required GPUMultisampleState multisample,
+      required GPUFragmentState fragment,
+      GPUDepthStencilState? depthStencil}) {
     pointer = ffi.calloc<WGPURenderPipelineDescriptor>();
     var descriptor = pointer.ref;
     descriptor.label = "label".toNativeUtf8().cast();
@@ -38,10 +31,7 @@ class GPURenderPipelineDescriptor extends GPUPipelineDescriptorBase {
 
     descriptor.vertex = vertex.pointer.ref;
     descriptor.primitive = primitive.pointer.ref;
-    if( multisample != null ) descriptor.multisample = multisample.pointer.ref;
+    if (multisample != null) descriptor.multisample = multisample.pointer.ref;
     descriptor.fragment = fragment.pointer;
-
   }
-
-
 }
