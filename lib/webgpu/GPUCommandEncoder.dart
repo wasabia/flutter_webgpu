@@ -108,8 +108,8 @@ class GPURenderPassDepthStencilAttachment {
       int? stencilClearValue}) {
     pointer = ffi.calloc<WGPURenderPassDepthStencilAttachment>();
 
-    ref.depthReadOnly = 0;
-    ref.stencilReadOnly = 0;
+    ref.depthReadOnly = false;
+    ref.stencilReadOnly = false;
 
     if (view != null) ref.view = view.textureView;
     if (depthStoreOp != null) ref.depthStoreOp = depthStoreOp;

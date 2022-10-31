@@ -1,7 +1,7 @@
 part of webgpu;
 
 void wgpuRequestDeviceCallback(int status, WGPUDevice received,
-    Pointer<Int8> message, Pointer<Void> userdata) {
+    Pointer<Char> message, Pointer<Void> userdata) {
   print(
       "wgpuRequestDeviceCallback status: ${status} received: ${received} message: ${message} userdata: ${userdata} ");
   Pointer<WGPUDevice> _device = userdata.cast();
@@ -10,7 +10,7 @@ void wgpuRequestDeviceCallback(int status, WGPUDevice received,
 }
 
 typedef WgpuRequestDeviceCallback = Void Function(
-    Int32, WGPUDevice, Pointer<Int8>, Pointer<Void>);
+    Int32, WGPUDevice, Pointer<Char>, Pointer<Void>);
 
 class GPUAdapter {
   late Pointer<WGPUAdapter> adapter;

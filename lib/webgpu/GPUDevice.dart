@@ -87,7 +87,7 @@ class GPUDevice extends GPUObjectBase {
   }
 
   void poll([bool forceWait = true]) {
-    webGPU.wgpuDevicePoll(device.value, forceWait);
+    webGPU.wgpuDevicePoll(device.value, forceWait, nullptr);
   }
 
   void setUncapturedErrorCallback() {
@@ -107,17 +107,21 @@ class GPUDevice extends GPUObjectBase {
 void handleDeviceLost(
     int reason, Pointer<Int8> message, Pointer<Void> userdata) {
   print("---------------- handleDeviceLost reason: ${reason} ");
+  print(userdata);
+  print(message.cast<ffi.Utf8>().toDartString());
 }
 
 void handleUncapturedError(
-    int type, Pointer<Int8> message, Pointer<Void> userdata) {
+    int type, Pointer<Char> message, Pointer<Void> userdata) {
   print("----------------- ErrorCallback type: ${type} ");
+  print(userdata);
+  print(message.cast<ffi.Utf8>().toDartString());
 }
 
 typedef HandleDeviceLostNative = Void Function(
     Int32, Pointer<Int8>, Pointer<Void>);
 typedef HandleUncapturedErrorNative = Void Function(
-    Int32, Pointer<Int8>, Pointer<Void>);
+    Int32, Pointer<Char>, Pointer<Void>);
 
 class GPUDeviceDescriptor {
   late Pointer<WGPUDeviceDescriptor> pointer;
@@ -144,7 +148,6 @@ class GPUDeviceDescriptor {
     Pointer<WGPUDeviceExtras> deviceExtras = ffi.calloc<WGPUDeviceExtras>();
     WGPUDeviceExtras _deviceExtras = deviceExtras.ref;
     _deviceExtras.chain = _chain;
-    _deviceExtras.label = "Device".toNativeUtf8().cast();
     _deviceExtras.tracePath = nullptr;
 
     ref.nextInChain = deviceExtras.cast();

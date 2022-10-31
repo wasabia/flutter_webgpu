@@ -59,7 +59,7 @@ class GPUMultisampleState {
     var state = pointer.ref;
     state.count = count;
     state.mask = mask;
-    state.alphaToCoverageEnabled = alphaToCoverageEnabled ? 1 : 0;
+    state.alphaToCoverageEnabled = alphaToCoverageEnabled;
   }
 }
 
@@ -128,7 +128,7 @@ class GPUDepthStencilState {
     pointer = ffi.calloc<WGPUDepthStencilState>();
     var ref = pointer.ref;
     ref.format = format;
-    ref.depthWriteEnabled = depthWriteEnabled ? 1 : 0;
+    ref.depthWriteEnabled = depthWriteEnabled;
     ref.depthCompare = depthCompare ?? GPUCompareFunction.Always;
     ref.stencilFront = stencilFront.pointer.ref;
     ref.stencilBack =

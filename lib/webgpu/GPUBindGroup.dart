@@ -24,10 +24,9 @@ class GPUBindGroupDescriptor {
     if (entries == null) {
       ref.entries = nullptr;
       ref.entryCount = 0;
-    } else if (entries.length == 1) {
-      ref.entries = entries[0].pointer;
-      ref.entryCount = 1;
     } else {
+      print(" entries entryCount: ${entries.length}  ");
+
       var entryPointers = ffi.calloc<WGPUBindGroupEntry>(entries.length);
       entries.asMap().forEach((index, entry) {
         var pointer = entryPointers[index];
@@ -41,8 +40,6 @@ class GPUBindGroupDescriptor {
 
       ref.entries = entryPointers;
       ref.entryCount = entries.length;
-
-      print("GPUBindGroupDescriptor entries: ${entries.length}   ");
     }
   }
 }

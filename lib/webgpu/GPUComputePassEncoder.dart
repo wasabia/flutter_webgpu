@@ -17,7 +17,8 @@ class GPUComputePassEncoder extends GPUObjectBase
         computePass, v0, bindGroup.bindGroup, v1, v2 ?? nullptr);
   }
 
-  void dispatch(int workgroupCountX,
+  // TODO
+  void dispatchWorkgroups(int workgroupCountX,
       [int workgroupCountY = 1, int workgroupCountZ = 1]) {
     Wgpu.binding.wgpuComputePassEncoderDispatch(
         computePass, workgroupCountX, workgroupCountY, workgroupCountZ);
@@ -27,9 +28,6 @@ class GPUComputePassEncoder extends GPUObjectBase
     Wgpu.binding.wgpuComputePassEncoderEnd(computePass);
   }
 
-  void endPass() {
-    end();
-  }
 }
 
 class GPUComputePassDescriptor extends GPUObjectDescriptorBase {

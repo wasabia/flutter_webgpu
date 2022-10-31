@@ -31,7 +31,7 @@ class GPURenderPipelineDescriptor extends GPUPipelineDescriptorBase {
 
     descriptor.vertex = vertex.pointer.ref;
     descriptor.primitive = primitive.pointer.ref;
-    if (multisample != null) descriptor.multisample = multisample.pointer.ref;
+    descriptor.multisample = multisample.pointer.ref;
     descriptor.fragment = fragment.pointer;
   }
 }

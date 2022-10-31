@@ -8,10 +8,10 @@ import 'package:flutter_webgpu/flutter_webgpu.dart';
 
 String shaderStr = """
 struct PrimeIndices {
-    data: [[stride(4)]] array<u32>;
+    data: @stride(4) array<u32>;
 }; // this is used as both input and output for convenience
 
-[[group(0), binding(0)]]
+@group(0) @binding(0)
 var<storage, read_write> v_indices: PrimeIndices;
 
 // The Collatz Conjecture states that for any integer n:
@@ -43,34 +43,34 @@ fn collatz_iterations(n_base: u32) -> u32{
     return i;
 }
 
-[[stage(compute), workgroup_size(1)]]
-fn main([[builtin(global_invocation_id)]] global_id: vec3<u32>) {
+@compute @workgroup_size(1)
+fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
     v_indices.data[global_id.x] = collatz_iterations(v_indices.data[global_id.x]);
 }
     """;
 
 String computeWGSL = """
 struct Particle {
-  pos : vec2<f32>;
-  vel : vec2<f32>;
+  pos : vec2<f32>,
+  vel : vec2<f32>,
 };
 
 struct SimParams {
-  deltaT : f32;
-  rule1Distance : f32;
-  rule2Distance : f32;
-  rule3Distance : f32;
-  rule1Scale : f32;
-  rule2Scale : f32;
-  rule3Scale : f32;
+  deltaT : f32,
+  rule1Distance : f32,
+  rule2Distance : f32,
+  rule3Distance : f32,
+  rule1Scale : f32,
+  rule2Scale : f32,
+  rule3Scale : f32,
 };
 
-[[group(0), binding(0)]] var<uniform> params : SimParams;
-[[group(0), binding(1)]] var<storage, read> particlesSrc : array<Particle>;
-[[group(0), binding(2)]] var<storage, read_write> particlesDst : array<Particle>;
+@group(0) @binding(0) var<uniform> params : SimParams;
+@group(0) @binding(1) var<storage, read> particlesSrc : array<Particle>;
+@group(0) @binding(2) var<storage, read_write> particlesDst : array<Particle>;
 
-[[stage(compute), workgroup_size(64)]]
-fn main([[builtin(global_invocation_id)]] global_invocation_id: vec3<u32>) {
+@compute @workgroup_size(64)
+fn main(@builtin(global_invocation_id) global_invocation_id: vec3<u32>) {
   let total = arrayLength(&particlesSrc);
   let index = global_invocation_id.x;
   if (index >= total) {
@@ -152,12 +152,12 @@ fn main([[builtin(global_invocation_id)]] global_invocation_id: vec3<u32>) {
 """;
 
 String drawWGSL = """
-[[stage(vertex)]]
+@vertex
 fn main_vs(
-    [[location(0)]] particle_pos: vec2<f32>,
-    [[location(1)]] particle_vel: vec2<f32>,
-    [[location(2)]] position: vec2<f32>,
-) -> [[builtin(position)]] vec4<f32> {
+    @location(0) particle_pos: vec2<f32>,
+    @location(1) particle_vel: vec2<f32>,
+    @location(2) position: vec2<f32>,
+) -> @builtin(position) vec4<f32> {
     let angle = -atan2(particle_vel.x, particle_vel.y);
     let pos = vec2<f32>(
         position.x * cos(angle) - position.y * sin(angle),
@@ -166,8 +166,8 @@ fn main_vs(
     return vec4<f32>(pos + particle_pos, 0.0, 1.0);
 }
 
-[[stage(fragment)]]
-fn main_fs() -> [[location(0)]] vec4<f32> {
+@fragment
+fn main_fs() -> @location(0) vec4<f32> {
     return vec4<f32>(1.0, 1.0, 1.0, 1.0);
 }
 
@@ -201,7 +201,6 @@ class Boids {
       code: computeWGSL,
     ));
 
-    return null;
 
     var draw_shader = device.createShaderModule(GPUShaderModuleDescriptor(
       code: drawWGSL,
@@ -250,7 +249,7 @@ class Boids {
           buffer: GPUBufferBindingLayout(
               type: GPUBufferBindingType.Storage,
               minBindingSize: NUM_PARTICLES * 16))
-    ], entryCount: 3));
+    ]));
 
     var compute_pipeline_layout = device.createPipelineLayout(
         GPUPipelineLayoutDescriptor(
@@ -263,7 +262,7 @@ class Boids {
             bindGroupLayoutCount: 1));
 
     var desc = GPURenderPipelineDescriptor(
-      layout: render_pipeline_layout,
+      // layout: render_pipeline_layout,
       vertex:
           GPUVertexState(module: draw_shader, entryPoint: 'main_vs', buffers: [
         GPUVertexBufferLayout(
@@ -449,8 +448,8 @@ class Boids {
     passEncoder.setPipeline(compute_pipeline);
     passEncoder.setBindGroup(0, particle_bind_groups0);
     // passEncoder.draw(cubeVertexCount, 1, 0, 0);
-    passEncoder.dispatch(work_group_count);
-    passEncoder.endPass();
+    passEncoder.dispatchWorkgroups(work_group_count);
+    passEncoder.end();
 
     var copyTexture =
         GPUImageCopyTexture(texture: texture, origin: GPUOrigin3D());

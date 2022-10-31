@@ -19,7 +19,9 @@ class GPUQueue extends GPUObjectBase {
     int size,
   ) {
     // TODO 对应类型转对应类型的指针
-    print("GPUQueue writeBuffer confirm convert to right pointer ..... ");
+    // print("GPUQueue writeBuffer confirm convert to right pointer ${data.runtimeType}  ..... ");
+    // print(data);
+    
     var ptr;
 
     if (data is Uint32List) {
@@ -36,6 +38,8 @@ class GPUQueue extends GPUObjectBase {
       throw ("GPUQueue ${data.runtimeType} not support...... ");
     }
 
+
+    // size lengthInBytes
     Wgpu.binding.wgpuQueueWriteBuffer(
         queue, buffer.buffer, bufferOffset, ptr.cast<Void>(), size);
   }

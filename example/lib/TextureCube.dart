@@ -89,19 +89,19 @@ class TextureCube {
 
     String vert1 = """
 struct Uniforms {
-  modelViewProjectionMatrix : mat4x4<f32>;
+  modelViewProjectionMatrix : mat4x4<f32>,
 };
-[[binding(0), group(0)]] var<uniform> uniforms : Uniforms;
+@binding(0) @group(0) var<uniform> uniforms : Uniforms;
 
 struct VertexOutput {
-  [[builtin(position)]] Position : vec4<f32>;
-  [[location(0)]] fragUV : vec2<f32>;
-  [[location(1)]] fragPosition: vec4<f32>;
+  @builtin(position) Position : vec4<f32>,
+  @location(0) fragUV : vec2<f32>,
+  @location(1) fragPosition: vec4<f32>,
 };
 
-[[stage(vertex)]]
-fn main([[location(0)]] position : vec4<f32>,
-        [[location(1)]] uv : vec2<f32>) -> VertexOutput {
+@vertex
+fn main(@location(0) position : vec4<f32>,
+        @location(1) uv : vec2<f32>) -> VertexOutput {
   var output : VertexOutput;
   output.Position = uniforms.modelViewProjectionMatrix * position;
   output.fragUV = uv;
@@ -111,12 +111,12 @@ fn main([[location(0)]] position : vec4<f32>,
 """;
 
     String frag1 = """
-[[group(0), binding(1)]] var mySampler: sampler;
-[[group(0), binding(2)]] var myTexture: texture_2d<f32>;
+@binding(1) @group(0) var mySampler: sampler;
+@binding(2) @group(0) var myTexture: texture_2d<f32>;
 
-[[stage(fragment)]]
-fn main([[location(0)]] fragUV: vec2<f32>,
-        [[location(1)]] fragPosition: vec4<f32>) -> [[location(0)]] vec4<f32> {
+@fragment
+fn main(@location(0) fragUV: vec2<f32>,
+        @location(1) fragPosition: vec4<f32>) -> @location(0) vec4<f32> {
   return textureSample(myTexture, mySampler, fragUV) * fragPosition;
 }
 """;
@@ -158,18 +158,18 @@ fn main([[location(0)]] fragUV: vec2<f32>,
       GPUBindGroupLayoutEntry(
           binding: 1,
           visibility: GPUShaderStage.Fragment,
-          buffer: GPUBufferBindingLayout(type: GPUBufferBindingType.Uniform)),
+          buffer: GPUBufferBindingLayout(type: GPUBufferBindingType.Storage)),
       GPUBindGroupLayoutEntry(
           binding: 2,
           visibility: GPUShaderStage.Fragment,
           buffer: GPUBufferBindingLayout(type: GPUBufferBindingType.Uniform))
-    ], entryCount: 1));
+    ]));
 
     var layout = device.createPipelineLayout(GPUPipelineLayoutDescriptor(
         bindGroupLayouts: uniformGroupLayout, bindGroupLayoutCount: 1));
 
     var desc = GPURenderPipelineDescriptor(
-        layout: layout,
+        // layout: layout,
         vertex: vertex3,
         fragment: GPUFragmentState(
           module: fragModule,
@@ -181,17 +181,18 @@ fn main([[location(0)]] fragUV: vec2<f32>,
         primitive: GPUPrimitiveState(
             cullMode: GPUCullMode.Back, frontFace: GPUFrontFace.CCW),
         multisample: GPUMultisampleState(),
-        depthStencil: GPUDepthStencilState(
-            depthWriteEnabled: true,
-            depthCompare: GPUCompareFunction.Greater,
-            format: GPUTextureFormat.Depth24Plus,
-            stencilFront:
-                GPUStencilFaceState(compare: GPUCompareFunction.Always),
-            stencilBack:
-                GPUStencilFaceState(compare: GPUCompareFunction.Always),
-            depthBias: 2,
-            depthBiasSlopeScale: 2.0,
-            depthBiasClamp: 0.0));
+        // depthStencil: GPUDepthStencilState(
+        //     depthWriteEnabled: true,
+        //     depthCompare: GPUCompareFunction.Greater,
+        //     format: GPUTextureFormat.Depth24Plus,
+        //     stencilFront:
+        //         GPUStencilFaceState(compare: GPUCompareFunction.Always),
+        //     stencilBack:
+        //         GPUStencilFaceState(compare: GPUCompareFunction.Always),
+        //     depthBias: 2,
+        //     depthBiasSlopeScale: 2.0,
+        //     depthBiasClamp: 0.0)
+        );
 
     var pipeline = device.createRenderPipeline(desc);
 
@@ -216,6 +217,11 @@ fn main([[location(0)]] fragUV: vec2<f32>,
             GPUTextureUsage.RenderAttachment));
 
     var pixels = Uint8List(width * height * 4);
+
+    for(int i = 0; i < pixels.length; i ++ ) {
+      pixels[i] = 255;
+    }
+    
 
     device.queue.writeTexture(
         GPUImageCopyTexture(texture: cubeTexture),
@@ -289,15 +295,15 @@ fn main([[location(0)]] fragUV: vec2<f32>,
           clearColor: GPUColor(r: 0.5, g: 0.5, b: 0.0, a: 0.5),
           storeOp: GPUStoreOp.Store,
           loadOp: GPULoadOp.Clear),
-      depthStencilAttachment: GPURenderPassDepthStencilAttachment(
-        view: depthTexture.createView(GPUTextureViewDescriptor()),
-        // depthLoadOp: GPULoadOp.Clear,
-        // depthStoreOp: GPUStoreOp.Store,
-        // depthClearValue: 0.0,
-        // stencilLoadOp: GPULoadOp.Clear,
-        // stencilStoreOp: GPUStoreOp.Store,
-        // stencilClearValue: 0,
-      ),
+      // depthStencilAttachment: GPURenderPassDepthStencilAttachment(
+      //   view: depthTexture.createView(GPUTextureViewDescriptor()),
+      //   // depthLoadOp: GPULoadOp.Clear,
+      //   // depthStoreOp: GPUStoreOp.Store,
+      //   // depthClearValue: 0.0,
+      //   // stencilLoadOp: GPULoadOp.Clear,
+      //   // stencilStoreOp: GPUStoreOp.Store,
+      //   // stencilClearValue: 0,
+      // ),
     );
 
     var passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);

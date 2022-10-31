@@ -13,6 +13,7 @@ import 'package:flutter_webgpu_example/ExampleTriangle.dart';
 import 'package:flutter_webgpu_example/rotateCube.dart';
 import 'package:flutter_webgpu_example/TextureCube.dart';
 
+import 'helloTriangle2.dart';
 import 'boids.dart';
 import 'helloTriangle.dart';
 import 'helloTriangleMSAA.dart';
@@ -50,13 +51,15 @@ class _MyAppState extends State<MyApp> {
     // pixels = ExampleCapture.render(width, height);
     // pixels = ExampleCompute.render(width, height);
     // pixels = ExampleTriangle.render(width, height);
-    pixels = HelloTriangle.render(width, height);
+    // pixels = HelloTriangle.render(width, height);
     // pixels = HelloTriangleMSAA.render(width, height);
     // pixels = RotateCube.render(width, height);
 
+    // pixels = HelloTriangle2.render(width, height);
+
     // crash TODO
     // pixels = TextureCube.render(width, height);
-    // pixels = Boids.render(width, height);
+    pixels = Boids.render(width, height);
 
     if (pixels != null) {
       ui.decodeImageFromPixels(pixels!, width, height, ui.PixelFormat.rgba8888,

@@ -8,6 +8,4 @@
 #ifndef flutter_webgpu_Bridging_Header_h
 #define flutter_webgpu_Bridging_Header_h
 
-#include "webgpu.h"
-
 #endif /* flutter_webgpu_Bridging_Header_h */

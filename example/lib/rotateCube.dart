@@ -90,19 +90,21 @@ class RotateCube {
 
     String vert0 = """
 struct Uniforms {
-  modelViewProjectionMatrix : mat4x4<f32>;
-};
-[[binding(0), group(0)]] var<uniform> uniforms : Uniforms;
+  modelViewProjectionMatrix : mat4x4<f32>,
+}
+@binding(0) @group(0) var<uniform> uniforms : Uniforms;
 
 struct VertexOutput {
-  [[builtin(position)]] Position : vec4<f32>;
-  [[location(0)]] fragUV : vec2<f32>;
-  [[location(1)]] fragPosition: vec4<f32>;
-};
+  @builtin(position) Position : vec4<f32>,
+  @location(0) fragUV : vec2<f32>,
+  @location(1) fragPosition: vec4<f32>,
+}
 
-[[stage(vertex)]]
-fn vs_main([[location(0)]] position : vec4<f32>,
-        [[location(1)]] uv : vec2<f32>) -> VertexOutput {
+@vertex
+fn vs_main(
+  @location(0) position : vec4<f32>,
+  @location(1) uv : vec2<f32>
+) -> VertexOutput {
   var output : VertexOutput;
   output.Position = uniforms.modelViewProjectionMatrix * position;
   output.fragUV = uv;
@@ -110,32 +112,18 @@ fn vs_main([[location(0)]] position : vec4<f32>,
   return output;
 }
 
-[[stage(fragment)]]
-fn fs_main([[location(0)]] fragUV: vec2<f32>,
-        [[location(1)]] fragPosition: vec4<f32>) -> [[location(0)]] vec4<f32> {
+
+
+@fragment
+fn fs_main(
+  @location(0) fragUV: vec2<f32>,
+  @location(1) fragPosition: vec4<f32>
+) -> @location(0) vec4<f32> {
   return fragPosition;
 }
 """;
 
-    String vert1 = """
-[[stage(vertex)]]
-fn main([[builtin(vertex_index)]] VertexIndex : u32)
-     -> [[builtin(position)]] vec4<f32> {
-  var pos = array<vec2<f32>, 3>(
-      vec2<f32>(0.0, 0.5),
-      vec2<f32>(-0.5, -0.5),
-      vec2<f32>(0.5, -0.5));
 
-  return vec4<f32>(pos[VertexIndex], 0.0, 1.0);
-}
-""";
-
-    String frag1 = """
-[[stage(fragment)]]
-fn main() -> [[location(0)]] vec4<f32> {
-  return vec4<f32>(1.0, 0.0, 0.0, 1.0);
-}
-""";
 
     int cubeVertexSize = 4 * 10; // Byte size of one cube vertex.
     int cubePositionOffset = 0;
@@ -149,10 +137,8 @@ fn main() -> [[location(0)]] vec4<f32> {
           binding: 0,
           visibility: GPUShaderStage.Vertex,
           buffer: GPUBufferBindingLayout(type: GPUBufferBindingType.Uniform))
-    ], entryCount: 1));
+    ]));
 
-    var layout = device.createPipelineLayout(GPUPipelineLayoutDescriptor(
-        bindGroupLayouts: uniformGroupLayout, bindGroupLayoutCount: 1));
 
     var vertModule = device.createShaderModule(GPUShaderModuleDescriptor(
       code: vert0,
@@ -172,8 +158,11 @@ fn main() -> [[location(0)]] vec4<f32> {
       ])
     ]);
 
+    var layout = device.createPipelineLayout(GPUPipelineLayoutDescriptor(
+      bindGroupLayouts: uniformGroupLayout, bindGroupLayoutCount: 1));
+
     var desc = GPURenderPipelineDescriptor(
-      layout: layout,
+      // layout: layout,
       vertex: vertex3,
       fragment: GPUFragmentState(
         module: vertModule,
@@ -182,9 +171,8 @@ fn main() -> [[location(0)]] vec4<f32> {
           format: GPUTextureFormat.RGBA8Unorm,
         ),
       ),
-      primitive: GPUPrimitiveState(
-          cullMode: GPUCullMode.Back, frontFace: GPUFrontFace.CCW),
-      multisample: GPUMultisampleState(),
+      primitive: GPUPrimitiveState(),
+      multisample: GPUMultisampleState(count: 1),
       // depthStencil: GPUDepthStencilState(
       //   depthWriteEnabled: true,
       //   depthCompare: GPUCompareFunction.Greater,
@@ -193,11 +181,13 @@ fn main() -> [[location(0)]] vec4<f32> {
       //     compare:  GPUCompareFunction.Always
       //   ),
       //   stencilBack: GPUStencilFaceState(compare: GPUCompareFunction.Always),
-      //   depthBias: 2,
-      //   depthBiasSlopeScale: 2.0,
-      //   depthBiasClamp: 0.0
+      //   // depthBias: 2,
+      //   // depthBiasSlopeScale: 2.0,
+      //   // depthBiasClamp: 0.0
       // )
     );
+
+
 
     var pipeline = device.createRenderPipeline(desc);
 
@@ -274,17 +264,21 @@ fn main() -> [[location(0)]] vec4<f32> {
       //   depthLoadOp: GPULoadOp.Clear,
       //   depthStoreOp: GPUStoreOp.Store,
       //   depthClearValue: 0.0,
-      //   // stencilLoadOp: GPULoadOp.Clear,
-      //   // stencilStoreOp: GPUStoreOp.Store,
-      //   // stencilClearValue: 0,
+      //   stencilLoadOp: GPULoadOp.Clear,
+      //   stencilStoreOp: GPUStoreOp.Store,
+      //   stencilClearValue: 0,
       // ),
     );
+
+ 
 
     var passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);
     passEncoder.setPipeline(pipeline);
     passEncoder.setBindGroup(0, uniformBindGroup);
     passEncoder.setVertexBuffer(0, verticesBuffer);
     passEncoder.draw(cubeVertexCount, 1, 0, 0);
+
+
     passEncoder.end();
 
     var copyTexture =

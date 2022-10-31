@@ -1,7 +1,8 @@
 part of webgpu;
 
 void readBufferMap(int status, Pointer<Void> userdata) {
-  print("  readBufferMap callback ....... ");
+  print("  readBufferMap callback status: ${status} userdata: ${userdata}....... ");
+
 }
 
 typedef ReadBufferMap = Void Function(Int32, Pointer<Void>);
@@ -35,13 +36,13 @@ class GPUBufferDescriptor extends GPUObjectDescriptorBase {
   late Pointer<WGPUBufferDescriptor> pointer;
 
   GPUBufferDescriptor(
-      {required int size, required int usage, bool mappedAtCreation = false}) {
+      {required int size, required int usage, String? label, bool mappedAtCreation = false}) {
     pointer = ffi.calloc<WGPUBufferDescriptor>();
     WGPUBufferDescriptor _descriptor = pointer.ref;
     _descriptor.nextInChain = nullptr;
-    _descriptor.label = "Output Buffer".toNativeUtf8().cast();
+    if(label != null) _descriptor.label = label.toNativeUtf8().cast();
     _descriptor.usage = usage;
     _descriptor.size = size;
-    _descriptor.mappedAtCreation = mappedAtCreation ? 1 : 0;
+    _descriptor.mappedAtCreation = mappedAtCreation;
   }
 }

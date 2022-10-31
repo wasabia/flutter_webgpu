@@ -17,7 +17,7 @@ Pull Request please!
 ### Development
 
 update webgpu-headers submodule
-directory: ./ffi/webgpu-headers
+directory: ./native/wgpu-native/ffi/webgpu-headers
 
 ```
 git submodule update --init

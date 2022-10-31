@@ -6,7 +6,7 @@ import 'package:ffi/ffi.dart' as ffi;
 import 'package:flutter_webgpu/flutter_webgpu.dart';
 
 void wgpuRequestAdapterCallback(int status, WGPUAdapter received,
-    Pointer<Int8> message, Pointer<Void> userdata) {
+    Pointer<Char> message, Pointer<Void> userdata) {
   print(
       "wgpuRequestAdapterCallback  status: ${status} received: ${received} message: ${message} userdata: ${userdata} ");
 
@@ -17,10 +17,10 @@ void wgpuRequestAdapterCallback(int status, WGPUAdapter received,
 }
 
 typedef WgpuRequestAdapterCallback = Void Function(
-    Int32, WGPUAdapter, Pointer<Int8>, Pointer<Void>);
+    Int32, WGPUAdapter, Pointer<Char>, Pointer<Void>);
 
 void wgpuRequestDeviceCallback(int status, WGPUDevice received,
-    Pointer<Int8> message, Pointer<Void> userdata) {
+    Pointer<Char> message, Pointer<Void> userdata) {
   print(
       "wgpuRequestDeviceCallback status: ${status} received: ${received} message: ${message} userdata: ${userdata} ");
   Pointer<WGPUDevice> _device = userdata.cast();
@@ -29,7 +29,7 @@ void wgpuRequestDeviceCallback(int status, WGPUDevice received,
 }
 
 typedef WgpuRequestDeviceCallback = Void Function(
-    Int32, WGPUDevice, Pointer<Int8>, Pointer<Void>);
+    Int32, WGPUDevice, Pointer<Char>, Pointer<Void>);
 
 void readBufferMap(int status, Pointer<Void> userdata) {
   print("  readBufferMap callback ....... ");
@@ -74,7 +74,6 @@ class Example {
     Pointer<WGPUDeviceExtras> deviceExtras = ffi.calloc<WGPUDeviceExtras>();
     WGPUDeviceExtras _deviceExtras = deviceExtras.ref;
     _deviceExtras.chain = _chain;
-    _deviceExtras.label = "Device".toNativeUtf8().cast();
     _deviceExtras.tracePath = nullptr;
 
     Pointer<WGPUDeviceDescriptor> descriptor =
@@ -113,7 +112,7 @@ class Example {
     _desc.usage = WGPUBufferUsage.WGPUBufferUsage_MapRead |
         WGPUBufferUsage.WGPUBufferUsage_CopyDst;
     _desc.size = bufferSize;
-    _desc.mappedAtCreation = 0;
+    _desc.mappedAtCreation = false;
 
     WGPUBuffer outputBuffer =
         _webGPU.wgpuDeviceCreateBuffer(device.value, desc);
@@ -165,9 +164,9 @@ class Example {
     Pointer<WGPUColor> color = ffi.calloc<WGPUColor>();
     WGPUColor _color = color.ref;
     _color.r = 1.0;
-    _color.g = 0.5;
-    _color.b = 0.3;
-    _color.a = 0.2;
+    _color.g = 0.0;
+    _color.b = 0.0;
+    _color.a = 1.0;
 
     Pointer<WGPURenderPassColorAttachment> attach =
         ffi.calloc<WGPURenderPassColorAttachment>();
@@ -236,7 +235,7 @@ class Example {
     _webGPU.wgpuBufferMapAsync(outputBuffer, WGPUMapMode.WGPUMapMode_Read, 0,
         bufferSize, readBufferMapCallback, nullptr);
 
-    _webGPU.wgpuDevicePoll(device.value, true);
+    _webGPU.wgpuDevicePoll(device.value, true, nullptr);
 
     print(" wgpuBufferGetMappedRange ");
     var data = _webGPU.wgpuBufferGetMappedRange(outputBuffer, 0, bufferSize);

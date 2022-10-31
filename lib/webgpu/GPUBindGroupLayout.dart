@@ -16,16 +16,15 @@ class GPUBindGroupLayoutDescriptor extends GPUObjectDescriptorBase {
   late Pointer<WGPUBindGroupLayoutDescriptor> pointer;
 
   GPUBindGroupLayoutDescriptor(
-      {List<GPUBindGroupLayoutEntry>? entries, required int entryCount}) {
+      {List<GPUBindGroupLayoutEntry>? entries}) {
     pointer = ffi.calloc<WGPUBindGroupLayoutDescriptor>();
     var state = pointer.ref;
     state.label = "Bind Group Layout".toNativeUtf8().cast();
-    state.entryCount = entryCount;
+    
     if (entries == null) {
       state.entries = nullptr;
-    } else if (entries.length == 1) {
-      state.entries = entries[0].pointer;
     } else {
+      // state.entries = entries[0].pointer;
       var entryPointers = ffi.calloc<WGPUBindGroupLayoutEntry>(entries.length);
       entries.asMap().forEach((index, entry) {
         var pointer = entryPointers[index];
@@ -36,7 +35,9 @@ class GPUBindGroupLayoutDescriptor extends GPUObjectDescriptorBase {
         pointer.texture = entry.pointer.ref.texture;
         pointer.storageTexture = entry.pointer.ref.storageTexture;
       });
-      print(" GPUBindGroupLayoutDescriptor entries: ${entries.length} ");
+      
+      state.entries = entryPointers;
+      state.entryCount = entries.length;
     }
   }
 }
@@ -44,10 +45,11 @@ class GPUBindGroupLayoutDescriptor extends GPUObjectDescriptorBase {
 class GPUBufferBindingLayout {
   late Pointer<WGPUBufferBindingLayout> pointer;
 
-  GPUBufferBindingLayout({required int type, int? minBindingSize}) {
+  GPUBufferBindingLayout({required int type, bool hasDynamicOffset = false, int? minBindingSize}) {
     pointer = ffi.calloc<WGPUBufferBindingLayout>();
     var state = pointer.ref;
     state.type = type;
+    state.hasDynamicOffset = hasDynamicOffset;
     state.minBindingSize = minBindingSize ?? 0;
   }
 }

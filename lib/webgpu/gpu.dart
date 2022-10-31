@@ -1,7 +1,7 @@
 part of webgpu;
 
 void wgpuRequestAdapterCallback(int status, WGPUAdapter received,
-    Pointer<Int8> message, Pointer<Void> userdata) {
+    Pointer<Char> message, Pointer<Void> userdata) {
   Pointer<WGPUAdapter> _adapter = userdata.cast();
   _adapter.value = received;
 
@@ -10,7 +10,7 @@ void wgpuRequestAdapterCallback(int status, WGPUAdapter received,
 }
 
 typedef WgpuRequestAdapterCallback = Void Function(
-    Int32, WGPUAdapter, Pointer<Int8>, Pointer<Void>);
+    Int32, WGPUAdapter, Pointer<Char>, Pointer<Void>);
 
 GPUAdapter requestAdapter(GPURequestAdapterOptions options) {
   Pointer<WGPUAdapter> adapter = ffi.calloc<WGPUAdapter>();
@@ -33,6 +33,6 @@ class GPURequestAdapterOptions {
     ref.nextInChain = nullptr;
     ref.compatibleSurface = nullptr;
     ref.powerPreference = powerPreference ?? GPUPowerPreference.Undefined;
-    ref.forceFallbackAdapter = forceFallbackAdapter ? 1 : 0;
+    ref.forceFallbackAdapter = forceFallbackAdapter;
   }
 }

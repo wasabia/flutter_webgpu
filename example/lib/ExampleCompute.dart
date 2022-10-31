@@ -21,12 +21,9 @@ class ExampleCompute {
         "adapter.value: ${adapter.adapter.value} adapter: ${adapter.adapter} ");
 
     String shaderStr = """
-struct PrimeIndices {
-    data: [[stride(4)]] array<u32>;
-}; // this is used as both input and output for convenience
-
-[[group(0), binding(0)]]
-var<storage, read_write> v_indices: PrimeIndices;
+@group(0)
+@binding(0)
+var<storage, read_write> v_indices: array<u32>; // this is used as both input and output for convenience
 
 // The Collatz Conjecture states that for any integer n:
 // If n is even, n = n/2
@@ -57,9 +54,10 @@ fn collatz_iterations(n_base: u32) -> u32{
     return i;
 }
 
-[[stage(compute), workgroup_size(1)]]
-fn main([[builtin(global_invocation_id)]] global_id: vec3<u32>) {
-    v_indices.data[global_id.x] = collatz_iterations(v_indices.data[global_id.x]);
+@compute
+@workgroup_size(1)
+fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
+    v_indices[global_id.x] = collatz_iterations(v_indices[global_id.x]);
 }
     """;
 
@@ -76,19 +74,19 @@ fn main([[builtin(global_invocation_id)]] global_id: vec3<u32>) {
 
     var bufferDesc1 = GPUBufferDescriptor(
         size: numbersSize,
+        label: 'StorageBuffer',
         usage: GPUBufferUsage.Storage |
             GPUBufferUsage.CopyDst |
-            GPUBufferUsage.CopySrc |
-            GPUBufferUsage.MapRead |
-            GPUBufferBindingType.Uniform);
+            GPUBufferUsage.CopySrc);
     var storageBuffer = device.createBuffer(bufferDesc1);
+
 
     var _bindGroupLayoutDesc = GPUBindGroupLayoutDescriptor(entries: [
       GPUBindGroupLayoutEntry(
           binding: 0,
           visibility: GPUShaderStage.Compute,
           buffer: GPUBufferBindingLayout(type: GPUBufferBindingType.Storage))
-    ], entryCount: 1);
+    ]);
 
     var bindGroupLayout = device.createBindGroupLayout(_bindGroupLayoutDesc);
     var pipelineLayout = device.createPipelineLayout(
@@ -109,11 +107,11 @@ fn main([[builtin(global_invocation_id)]] global_id: vec3<u32>) {
     var bindGroup = device.createBindGroup(GPUBindGroupDescriptor(
         label: "Bind Group",
         layout: bindGroupLayout,
-        entries: [GPUBindGroupEntry(binding: 0, buffer: storageBuffer)],
+        entries: [GPUBindGroupEntry(binding: 0, buffer: storageBuffer, size: numbersSize)],
         entryCount: 1));
 
     computePass.setBindGroup(0, bindGroup, 0, null);
-    computePass.dispatch(numbersLength, 1, 1);
+    // computePass.dispatch(numbersLength, 1, 1);
     computePass.end();
 
     encoder.copyBufferToBuffer(storageBuffer, 0, stagingBuffer, 0, numbersSize);
